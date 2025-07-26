@@ -4,16 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style type="text/tailwindcss">
-      @theme {
-        --color-background: #262730;
-        --color-secondary: #d33f49;
-        --color-secondary-hover: #9c4349;
-      }
-    </style>
+    <link rel="stylesheet" href="/static/style.css" />
     <title>Landing Page</title>
   </head>
-  <body class="bg-background" style="background-color: #262730">
+  <body class="bg-custom-background">
     <section class="bg-background dark:bg-background">
       <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
         <h1
@@ -32,7 +26,7 @@
         >
           <a
             href="{{ url_for('home') }}"
-            class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-secondary hover:bg-secondary-hover focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
+            class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-custom-secondary hover:bg-custom-secondary-hover focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
           >
             Get started
             <svg

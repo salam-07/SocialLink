@@ -1,0 +1,82 @@
+@layer base {
+  :root {
+    --color-background: #262730;
+    --color-background-alt: #1d1e20ff;
+    --color-secondary: #d33f49;
+    --color-secondary-hover: #9c4349;
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-accent: #10b981;
+    --color-accent-hover: #059669;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #9ca3af;
+    --color-border: #374151;
+  }
+}
+
+@layer utilities {
+  /* Custom background colors */
+  .bg-custom-background {
+    background-color: var(--color-background);
+  }
+
+  .bg-custom-secondary {
+    background-color: var(--color-secondary);
+  }
+
+  .bg-custom-primary {
+    background-color: var(--color-primary);
+  }
+
+  .bg-custom-accent {
+    background-color: var(--color-accent);
+  }
+
+  /* Custom text colors */
+  .text-custom-primary {
+    color: var(--color-text-primary);
+  }
+
+  .text-custom-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .text-custom-accent {
+    color: var(--color-accent);
+  }
+
+  /* Custom border colors */
+  .border-custom {
+    border-color: var(--color-border);
+  }
+
+  .border-custom-secondary {
+    border-color: var(--color-secondary);
+  }
+
+  /* Hover states */
+  .hover\:bg-custom-secondary-hover:hover {
+    background-color: var(--color-secondary-hover);
+  }
+
+  .hover\:bg-custom-primary-hover:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .hover\:bg-custom-accent-hover:hover {
+    background-color: var(--color-accent-hover);
+  }
+
+  /* Focus states */
+  .focus\:border-custom-secondary:focus {
+    border-color: var(--color-secondary);
+  }
+
+  .focus\:ring-custom-secondary:focus {
+    --tw-ring-color: var(--color-secondary);
+  }
+
+  .nav-bg {
+    background-color: var(--color-background-alt);
+  }
+}
