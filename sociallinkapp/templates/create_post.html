@@ -37,45 +37,41 @@
 
 <!-- Show uploaded file if exists -->
 {% if uploaded_file %}
-<div id="uploaded-file-preview"
-  class="mx-4 sm:mx-6 md:mx-10 mb-6 p-3 sm:p-4 bg-gray-800 border border-gray-600 rounded-lg">
-  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
-    <div class="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
+<div id="uploaded-file-preview" class="mx-10 mb-6 p-4 bg-gray-800 border border-gray-600 rounded-lg">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-4">
       <div class="flex-shrink-0">
         {% set file_ext = uploaded_file.filename.split('.')[-1].lower() %}
         {% if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'svg'] %}
         <img src="{{ uploaded_file.file_path }}" alt="Uploaded file"
-          class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded border border-gray-500">
+          class="w-16 h-16 object-cover rounded border border-gray-500">
         {% elif file_ext in ['mp4', 'mov', 'avi', 'webm'] %}
-        <video class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded border border-gray-500">
+        <video class="w-16 h-16 object-cover rounded border border-gray-500">
           <source src="{{ uploaded_file.file_path }}" type="video/{{ file_ext }}">
         </video>
         {% else %}
-        <div
-          class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-700 rounded border border-gray-500 flex items-center justify-center">
-          <i class="material-symbols-outlined text-gray-400 text-lg sm:text-xl">description</i>
+        <div class="w-16 h-16 bg-gray-700 rounded border border-gray-500 flex items-center justify-center">
+          <i class="material-symbols-outlined text-gray-400">description</i>
         </div>
         {% endif %}
       </div>
       <div class="flex-1 min-w-0">
-        <p class="text-xs sm:text-sm font-medium text-white truncate">
+        <p class="text-sm font-medium text-white truncate">
           {{ uploaded_file.original_name }}
         </p>
-        <p class="text-xs sm:text-sm text-gray-400">
+        <p class="text-sm text-gray-400">
           File uploaded successfully
         </p>
       </div>
     </div>
-    <div class="flex items-center justify-between sm:justify-end space-x-2 sm:space-x-2">
-      <span
-        class="inline-flex items-center px-2 py-1 sm:px-2.5 sm:py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+    <div class="flex items-center space-x-2">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
         <i class="material-symbols-outlined text-xs mr-1">check_circle</i>
-        <span class="hidden sm:inline">Uploaded</span>
-        <span class="sm:hidden">✓</span>
+        Uploaded
       </span>
       <a href="{{ url_for('remove_upload') }}"
-        class="inline-flex items-center p-1.5 sm:p-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-gray-700 rounded">
-        <i class="material-symbols-outlined text-lg sm:text-xl">delete</i>
+        class="inline-flex items-center p-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-gray-700 rounded">
+        <i class="material-symbols-outlined">delete</i>
       </a>
     </div>
   </div>
@@ -86,7 +82,7 @@
   <form action="{{ url_for('create_post') }}" method="post" enctype="multipart/form-data">
     <div id="media-upload" class="flex items-center justify-center w-full mt-8">
       <label for="dropzone-file"
-        class="p-8 flex flex-col items-center justify-center w-full h-64 border-1 border-gray-300 border mx-10 rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 bg-gray-900 hover:bg-gray-100 border-gray-600 hover:border-gray-500">
+        class="flex flex-col items-center justify-center w-full h-64 border-1 border-gray-300 border mx-10 rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 bg-gray-900 hover:bg-gray-100 border-gray-600 hover:border-gray-500">
         <div class="flex flex-col items-center justify-center pt-5 pb-6 text-white">
           <i class=" material-symbols-outlined" style="font-size: xxx-large;">cloud_upload</i>
           <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
