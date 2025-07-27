@@ -14,20 +14,20 @@ def landing():
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', heading="Dashboard", title="Dashboard")
 
 @app.route('/create')
 def create_post():
-    return render_template('create_post.html')
+    return render_template('create_post.html', heading="Publish Posts", title="Publish Posts")
 
 @app.route('/history')
 def history():
-    return render_template('history.html')
+    return render_template('history.html', heading="Posting History", title="Posting History")
 
 @app.route('/accounts')
 def accounts():
-    return render_template('accounts.html')
+    return render_template('accounts.html', heading="Manage Accounts", title="Manage Accounts")
 
 @app.route('/help')
 def help():
-    return render_template('help.html')
+    return render_template('help.html', heading="Help", title="Help")
