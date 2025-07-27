@@ -9,7 +9,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <title>SocialLink</title>
+    <title>SocialLink - {{ title }}</title>
     <link rel="stylesheet" href="/static/style.css" />
     <script src="/static/script.js"></script>
   </head>
@@ -89,6 +89,9 @@
         </ul>
       </div>
     </aside>
-    {% block content %} {% endblock %}
+    <div class="flex flex-col p-4 sm:ml-64 justify-between gap-7">
+      <h1 class="text-custom-primary text-4xl font-bold">{{ heading }}</h1>
+      <div>{% block content %} {% endblock %}</div>
+    </div>
   </body>
 </html>
