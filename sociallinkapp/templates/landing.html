@@ -8,20 +8,26 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="/static/style.css" />
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <title>Landing Page</title>
 </head>
 
 <body class="bg-custom-background">
+  <script>
+    AOS.init();
+  </script>
   <section
     class="bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
     <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative shadow-xl">
-      <a href="{{ url_for('home') }}"
-        class="shadow-xl inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800">
+      <a href="{{ url_for('home') }}" data-aos="zoom-in"
+        class="transition hover:scale-80 shadow-xl inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800">
         <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">Try Now</span> <span
           class="text-sm font-medium">Make your social marketing easier!</span>
         <i class="material-symbols-outlined" style="margin-left: 4px; font-size :small;">arrow_forward_ios</i>
       </a>
-      <h1
+      <h1 data-aos="zoom-out"
         class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         SocialLink™</h1>
       <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-200">Here at Flowbite
@@ -31,12 +37,12 @@
         et iaculis.</p>
       <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
         <a href="{{ url_for('home') }}"
-          class="shadow-xl inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+          class="hover:scale-110 bg-custom-secondary inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg transition">
           Get started
           <i class="material-symbols-outlined ml-1">arrow_right_alt</i>
         </a>
         <a href="#features"
-          class="shadow-xl py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+          class="transition hover:scale-110 bg-gray-900 text-base text-center text-white shadow-xl py-3 px-5 sm:ms-4 text-sm text-gray-900 focus:outline-none rounded-lg">
           Learn more
         </a>
       </div>
@@ -47,7 +53,7 @@
   </section>
 
   <div class="m-8 p-16 bg-gray-900 rounded-lg" id="features">
-    <ol class=" relative border-s border-gray-200 dark:border-gray-700">
+    <ol data-aos="fade-left" class="relative border-s border-gray-200 dark:border-gray-700">
       <li class="mb-10 ms-6">
         <span
           class="text-white font-bold absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
@@ -114,13 +120,13 @@
   </div>
 
   <div class="grid md:grid-cols-2 gap-8 m-8">
-    <div class="bg-gray-900 rounded-lg p-8 md:p-12">
+    <div data-aos="fade-up" class="bg-gray-900 rounded-lg p-8 md:p-12">
       <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Start with Flowbite Design System</h2>
       <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Static websites are now used to bootstrap
         lots of websites and are becoming the basis for a variety of tools that even influence both web designers and
         developers.</p>
     </div>
-    <div class="bg-gray-900 rounded-lg p-8 md:p-12">
+    <div data-aos="fade-up" class="bg-gray-900 rounded-lg p-8 md:p-12">
       <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Best react libraries around the web</h2>
       <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Static websites are now used to bootstrap
         lots of websites and are becoming the basis for a variety of tools that even influence both web designers and
