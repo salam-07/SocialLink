@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function showMedia() {
     // Show media upload section
-    document.getElementById('media-upload').classList.remove('hidden');
+    document.getElementById('media-upload-section').classList.remove('hidden');
     // Hide text form section
     document.getElementById('text-form').classList.add('hidden');
     // Show caption section for media posts
@@ -50,7 +50,7 @@ function showMedia() {
 
 function showText() {
     // Hide media upload section
-    document.getElementById('media-upload').classList.add('hidden');
+    document.getElementById('media-upload-section').classList.add('hidden');
     // Show text form section
     document.getElementById('text-form').classList.remove('hidden');
     // Hide caption section for text posts

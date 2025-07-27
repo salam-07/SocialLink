@@ -5,6 +5,7 @@ from flask import render_template, url_for, redirect, flash, request, abort
 
 # local imports
 from sociallinkapp import app
+from sociallinkapp.file_handler import handle_file_upload
 
 
 # route for the landing page
@@ -17,8 +18,20 @@ def landing():
 def home():
     return render_template('home.html', heading="Dashboard", title="Dashboard")
 
-@app.route('/create')
+@app.route('/create', methods=['GET', 'POST'])
 def create_post():
+    if request.method == 'POST':
+        # Handle file upload
+        result = handle_file_upload('dropzone-file')
+        
+        if result['success']:
+            flash(f'File uploaded successfully! File: {result["filename"]}', 'success')
+        else:
+            flash(f'Upload failed: {result["message"]}', 'error')
+        
+        return redirect(url_for('create_post'))
+    
+    # GET request - show the form
     platforms = [
         {'id': 'facebook', 'name': 'Facebook', 'icon': 'facebook.png'},
         {'id': 'x', 'name': 'X', 'icon': 'x.png'},
