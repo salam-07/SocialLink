@@ -29,6 +29,8 @@ function showMedia() {
     document.getElementById('media-upload').classList.remove('hidden');
     // Hide text form section
     document.getElementById('text-form').classList.add('hidden');
+    // Show caption section for media posts
+    document.getElementById('caption-section').classList.remove('hidden');
 
     // Update tab styles
     const mediaBtn = document.getElementById('media-btn');
@@ -51,6 +53,8 @@ function showText() {
     document.getElementById('media-upload').classList.add('hidden');
     // Show text form section
     document.getElementById('text-form').classList.remove('hidden');
+    // Hide caption section for text posts
+    document.getElementById('caption-section').classList.add('hidden');
 
     // Update tab styles
     const mediaBtn = document.getElementById('media-btn');
