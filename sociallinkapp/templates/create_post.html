@@ -54,4 +54,26 @@
 </form>
 
 <h2 class="my-8 font-bold text-white text-xl">2. Select Platforms</h2>
+
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+  {% for platform in platforms %}
+  <div
+    class="platform-card rounded-lg p-6 text-center cursor-pointer transition-all duration-200 hover:border-gray-400 bg-gray-800"
+    data-platform-id="{{ platform.id }}" data-platform-name="{{ platform.name }}"
+    onclick="togglePlatform('{{ platform.id }}', '{{ platform.name }}')">
+    <div class="flex items-center justify-center space-x-3">
+      <img src="/static/icons/{{ platform.icon }}" alt="{{ platform.name }}" class="w-8 h-8 object-contain">
+      <span class="text-white font-medium text-xl">{{ platform.name }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class=" mx-10 mb-8">
+  <p class="text-white font-medium">
+    <span class="text-gray-400">Platforms Selected:</span>
+    <span id="selected-platforms" class="text-blue-400">None</span>
+  </p>
+</div>
+
 {% endblock %}

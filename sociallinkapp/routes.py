@@ -19,7 +19,15 @@ def home():
 
 @app.route('/create')
 def create_post():
-    return render_template('create_post.html', heading="Publish Posts", title="Publish Posts")
+    platforms = [
+        {'id': 'facebook', 'name': 'Facebook', 'icon': 'facebook.png'},
+        {'id': 'x', 'name': 'X', 'icon': 'x.png'},
+        {'id': 'instagram', 'name': 'Instagram', 'icon': 'instagram.png'},
+        {'id': 'linkedin', 'name': 'LinkedIn', 'icon': 'linkedin.png'},
+        {'id': 'threads', 'name': 'Threads', 'icon': 'threads.png'},
+        {'id': 'reddit', 'name': 'Reddit', 'icon': 'reddit.png'}
+    ]
+    return render_template('create_post.html', heading="Publish Posts", title="Publish Posts", platforms=platforms)
 
 @app.route('/history')
 def history():

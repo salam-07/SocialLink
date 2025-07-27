@@ -93,3 +93,44 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+// Platform selection functionality
+let selectedPlatforms = [];
+
+function togglePlatform(platformId, platformName) {
+    const platformCard = document.querySelector(`[data-platform-id="${platformId}"]`);
+    const selectedPlatformsDisplay = document.getElementById('selected-platforms');
+
+    if (selectedPlatforms.includes(platformId)) {
+        // Remove platform from selection
+        selectedPlatforms = selectedPlatforms.filter(id => id !== platformId);
+        platformCard.classList.remove('bg-blue-600', 'border-blue-500');
+        platformCard.classList.add('bg-gray-800', 'border-gray-600');
+    } else {
+        // Add platform to selection
+        selectedPlatforms.push(platformId);
+        platformCard.classList.remove('bg-gray-800', 'border-gray-600');
+        platformCard.classList.add('bg-blue-600', 'border-blue-500');
+    }
+
+    // Update the display text
+    updateSelectedPlatformsDisplay();
+}
+
+function updateSelectedPlatformsDisplay() {
+    const selectedPlatformsDisplay = document.getElementById('selected-platforms');
+
+    if (selectedPlatforms.length === 0) {
+        selectedPlatformsDisplay.textContent = 'None';
+        selectedPlatformsDisplay.className = 'text-gray-400';
+    } else {
+        // Get platform names from the selected IDs
+        const platformNames = selectedPlatforms.map(id => {
+            const card = document.querySelector(`[data-platform-id="${id}"]`);
+            return card.getAttribute('data-platform-name');
+        });
+
+        selectedPlatformsDisplay.textContent = platformNames.join(', ');
+        selectedPlatformsDisplay.className = 'text-blue-400';
+    }
+}
