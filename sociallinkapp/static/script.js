@@ -41,6 +41,9 @@ function showMedia() {
     // Text tab - inactive state
     textBtn.className = 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300';
     textBtn.removeAttribute('aria-current');
+
+    // Show all platforms for media
+    filterPlatforms('media');
 }
 
 function showText() {
@@ -60,6 +63,41 @@ function showText() {
     // Text tab - active state
     textBtn.className = 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500';
     textBtn.setAttribute('aria-current', 'page');
+
+    // Show only text-compatible platforms
+    filterPlatforms('text');
+}
+
+// Platform filtering function
+function filterPlatforms(mode) {
+    // Define which platforms are available for text posts
+    const textOnlyPlatforms = ['x', 'reddit', 'threads', 'linkedin'];
+
+    // Get all platform cards
+    const platformCards = document.querySelectorAll('.platform-card');
+
+    platformCards.forEach(card => {
+        const platformId = card.getAttribute('data-platform-id');
+
+        if (mode === 'text') {
+            // Show only text-compatible platforms
+            if (textOnlyPlatforms.includes(platformId)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+                // Remove from selection if it was selected and now hidden
+                if (selectedPlatforms.includes(platformId)) {
+                    selectedPlatforms = selectedPlatforms.filter(id => id !== platformId);
+                }
+            }
+        } else {
+            // Show all platforms for media
+            card.style.display = 'block';
+        }
+    });
+
+    // Update the selected platforms display
+    updateSelectedPlatformsDisplay();
 }
 
 // Accordion functionality
