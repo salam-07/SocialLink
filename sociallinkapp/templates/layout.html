@@ -1,97 +1,91 @@
 <!DOCTYPE html>
 <!--DO NOt change this file, except for adding links to navbar-->
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <title>SocialLink - {{ title }}</title>
-    <link rel="stylesheet" href="/static/style.css" />
-    <script src="/static/script.js"></script>
-  </head>
-  <body class="bg-custom-background">
-    <button
-      data-drawer-target="separator-sidebar"
-      data-drawer-toggle="separator-sidebar"
-      aria-controls="separator-sidebar"
-      type="button"
-      class="inline-flex items-center p-3 mt-2 ms-3 text-lg text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-    >
-      <span class="sr-only">Open sidebar</span>
-      <i class="fa fa-bars text-xl"></i>
-    </button>
 
-    <aside
-      id="separator-sidebar"
-      class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-      aria-label="Sidebar"
-    >
-      <div class="h-full px-3 py-4 overflow-y-auto nav-bg">
-        <ul class="space-y-2 font-medium">
-          <li>
-            <a
-              href="{{ url_for('home') }}"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            >
-              <!-- Home/Dashboard icon -->
-              <i class="fa fa-home"></i>
-              <span class="ms-3">Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="{{ url_for('create_post') }}"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            >
-              <!-- Plus icon for Create a Post -->
-              <i class="fa fa-plus"></i>
-              <span class="flex-1 ms-3 whitespace-nowrap">Create a Post</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="{{ url_for('history') }}"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            >
-              <!-- History icon -->
-              <i class="fa fa-history"></i>
-              <span class="flex-1 ms-3 whitespace-nowrap">Posting History</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="{{ url_for('accounts') }}"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            >
-              <!-- User icon for Manage Accounts -->
-              <i class="fa fa-users"></i>
-              <span class="flex-1 ms-3 whitespace-nowrap">Manage Accounts</span>
-            </a>
-          </li>
-        </ul>
-        <ul
-          class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"
-        >
-          <li>
-            <a
-              href="{{ url_for('help') }}"
-              class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-            >
-              <!-- Book icon for Documentation -->
-              <i class="fa fa-question"></i>
-              <span class="ms-3">Help</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </aside>
-    <div class="flex flex-col p-4 sm:ml-64 justify-between gap-7">
-      <h1 class="text-custom-primary text-4xl font-bold">{{ heading }}</h1>
-      <div>{% block content %} {% endblock %}</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <title>SocialLink - {{ title }}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <script src="/static/script.js"></script>
+</head>
+
+<body class="bg-custom-background">
+  <button data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar"
+    aria-controls="separator-sidebar" type="button"
+    class="inline-flex items-center p-3 mt-2 ms-3 text-lg text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+    <span class="sr-only">Open sidebar</span>
+    <i class="fa fa-bars text-xl"></i>
+  </button>
+
+  <aside id="separator-sidebar"
+    class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+    aria-label="Sidebar">
+    <div class="h-full px-3 py-4 overflow-y-auto nav-bg">
+      <ul class="space-y-2 font-medium">
+        <li>
+          <a href="{{ url_for('home') }}"
+            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <!-- Home/Dashboard icon -->
+            <i class="fa fa-home"></i>
+            <span class="ms-3">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('create_post') }}"
+            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <!-- Plus icon for Create a Post -->
+            <i class="fa fa-plus"></i>
+            <span class="flex-1 ms-3 whitespace-nowrap">Create a Post</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('history') }}"
+            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <!-- History icon -->
+            <i class="fa fa-history"></i>
+            <span class="flex-1 ms-3 whitespace-nowrap">Posting History</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('accounts') }}"
+            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <!-- User icon for Manage Accounts -->
+            <i class="fa fa-users"></i>
+            <span class="flex-1 ms-3 whitespace-nowrap">Manage Accounts</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+        <li>
+          <a href="{{ url_for('help') }}"
+            class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+            <!-- Book icon for Documentation -->
+            <i class="fa fa-question"></i>
+            <span class="ms-3">Help</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('landing') }}"
+            class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+            <!-- Book icon for Documentation -->
+            <i class="fa fa-book"></i>
+            <span class="ms-3">About</span>
+          </a>
+        </li>
+      </ul>
     </div>
-  </body>
+  </aside>
+  <div class="flex flex-col p-4 sm:ml-64 justify-between gap-7">
+    <div class="flex items-center gap-4">
+      <div class="flex-1 h-px bg-white"></div>
+      <h1 class="text-custom-primary text-4xl font-bold">{{ heading }}</h1>
+      <div class="flex-6 h-px bg-white"></div>
+    </div>
+    <div>{% block content %} {% endblock %}</div>
+  </div>
+</body>
+
 </html>

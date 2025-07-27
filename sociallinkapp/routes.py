@@ -9,6 +9,7 @@ from sociallinkapp import app
 
 # route for the landing page
 @app.route('/')
+@app.route('/landing')
 def landing():
     return render_template('landing.html')
 
