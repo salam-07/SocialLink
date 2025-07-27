@@ -4,3 +4,9 @@
 *.pyc
 /static/uploads/
 /uploads/
+*.png
+*.jpg
+*.jpeg
+*.mov
+*.avi
+*.mp4
