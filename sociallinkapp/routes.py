@@ -1,7 +1,7 @@
 # contains all the routes needed for application
 
 # libraries import
-from flask import render_template, url_for, redirect, flash, request, abort
+from flask import render_template, url_for, redirect, flash, request, abort, session
 
 # local imports
 from sociallinkapp import app
@@ -20,18 +20,30 @@ def home():
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_post():
+    uploaded_file = None
+    
     if request.method == 'POST':
         # Handle file upload
         result = handle_file_upload('dropzone-file')
         
         if result['success']:
-            flash(f'File uploaded successfully! File: {result["filename"]}', 'success')
+            # Store uploaded file info in session
+            session['uploaded_file'] = {
+                'filename': result['filename'],
+                'file_path': result['file_path'],
+                'original_name': request.files['dropzone-file'].filename
+            }
+            flash(f'File uploaded successfully!', 'success')
         else:
             flash(f'Upload failed: {result["message"]}', 'error')
         
         return redirect(url_for('create_post'))
     
     # GET request - show the form
+    # Check if there's an uploaded file in session
+    if 'uploaded_file' in session:
+        uploaded_file = session['uploaded_file']
+    
     platforms = [
         {'id': 'facebook', 'name': 'Facebook', 'icon': 'facebook.png'},
         {'id': 'x', 'name': 'X', 'icon': 'x.png'},
@@ -40,7 +52,15 @@ def create_post():
         {'id': 'threads', 'name': 'Threads', 'icon': 'threads.png'},
         {'id': 'reddit', 'name': 'Reddit', 'icon': 'reddit.png'}
     ]
-    return render_template('create_post.html', heading="Publish Posts", title="Publish Posts", platforms=platforms)
+    return render_template('create_post.html', heading="Publish Posts", title="Publish Posts", platforms=platforms, uploaded_file=uploaded_file)
+
+@app.route('/remove_upload')
+def remove_upload():
+    """Remove uploaded file from session"""
+    if 'uploaded_file' in session:
+        session.pop('uploaded_file', None)
+        flash('File removed successfully!', 'success')
+    return redirect(url_for('create_post'))
 
 @app.route('/history')
 def history():
