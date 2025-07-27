@@ -34,7 +34,7 @@
         <ul class="space-y-2 font-medium">
           <li>
             <a
-              href="#"
+              href="{{ url_for('home') }}"
               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             >
               <!-- Home/Dashboard icon -->
@@ -44,7 +44,7 @@
           </li>
           <li>
             <a
-              href="#"
+              href="{{ url_for('create_post') }}"
               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             >
               <!-- Plus icon for Create a Post -->
@@ -54,7 +54,7 @@
           </li>
           <li>
             <a
-              href="#"
+              href="{{ url_for('history') }}"
               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             >
               <!-- History icon -->
@@ -64,7 +64,7 @@
           </li>
           <li>
             <a
-              href="#"
+              href="{{ url_for('accounts') }}"
               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             >
               <!-- User icon for Manage Accounts -->
@@ -78,17 +78,7 @@
         >
           <li>
             <a
-              href="#"
-              class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-            >
-              <!-- Logout icon -->
-              <i class="fa fa-sign-out"></i>
-              <span class="ms-3">Sign Out</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
+              href="{{ url_for('help') }}"
               class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
             >
               <!-- Book icon for Documentation -->

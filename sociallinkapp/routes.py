@@ -15,3 +15,19 @@ def landing():
 @app.route('/home')
 def home():
     return render_template('home.html')
+
+@app.route('/create')
+def create_post():
+    return render_template('create_post.html')
+
+@app.route('/history')
+def history():
+    return render_template('history.html')
+
+@app.route('/accounts')
+def accounts():
+    return render_template('accounts.html')
+
+@app.route('/help')
+def help():
+    return render_template('help.html')
