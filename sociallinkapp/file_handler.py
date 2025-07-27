@@ -139,7 +139,7 @@ def handle_file_upload(file_key='file'):
         
         # Success
         result['success'] = True
-        result['message'] = 'File uploaded successfully'
+        result['message'] = 'File uploaded successfully. Select Platforms to post.'
         result['filename'] = unique_filename
         result['file_path'] = f'/static/uploads/{unique_filename}'
         

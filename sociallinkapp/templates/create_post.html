@@ -78,7 +78,7 @@
 </div>
 {% endif %}
 
-<div id="media-upload-section" {% if uploaded_file %}class="hidden" {% endif %}>
+<div id="media-upload-section" {% if uploaded_file %} class="hidden" {% endif %}>
   <form action="{{ url_for('create_post') }}" method="post" enctype="multipart/form-data">
     <div id="media-upload" class="flex items-center justify-center w-full mt-8">
       <label for="dropzone-file"
