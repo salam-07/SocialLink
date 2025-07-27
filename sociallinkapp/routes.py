@@ -30,4 +30,22 @@ def accounts():
 
 @app.route('/help')
 def help():
-    return render_template('help.html', heading="Help", title="Help")
+    faq_data = [
+        {
+            'id': 1,
+            'question': 'What is SocialLink?',
+            'answer': [
+                'SocialLink is a powerful social media management platform that allows you to create, schedule, and manage posts across multiple social media platforms from one centralized dashboard.',
+                'With SocialLink, you can streamline your social media workflow, save time, and maintain a consistent online presence across all your social media accounts.'
+            ]
+        },
+        {
+            'id': 2,
+            'question': 'What is SocialLink?',
+            'answer': [
+                'SocialLink is a powerful social media management platform that allows you to create, schedule, and manage posts across multiple social media platforms from one centralized dashboard.',
+                'With SocialLink, you can streamline your social media workflow, save time, and maintain a consistent online presence across all your social media accounts.'
+            ]
+        }
+    ]
+    return render_template('help.html', heading="Help", title="Help", faq_data=faq_data)
