@@ -1,58 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="/static/style.css" />
-    <title>Landing Page</title>
-  </head>
-  <body class="bg-custom-background">
-    <section class="bg-background dark:bg-background">
-      <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
-        <h1
-          class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
-        >
-          SocialLink
-        </h1>
-        <p
-          class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-100"
-        >
-          Here at Flowbite we focus on markets where technology, innovation, and
-          capital can unlock long-term value and drive economic growth.
-        </p>
-        <div
-          class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0"
-        >
-          <a
-            href="{{ url_for('home') }}"
-            class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-custom-secondary hover:bg-custom-secondary-hover focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
-          >
-            Get started
-            <svg
-              class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </a>
-          <a
-            href="#"
-            class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-          >
-            Learn more
-          </a>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  <title>Landing Page</title>
+</head>
+
+<body class="bg-custom-background">
+  <section
+    class="bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
+      <a href="{{ url_for('home') }}"
+        class="inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800">
+        <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">Try Now</span> <span
+          class="text-sm font-medium">Make your social marketing easier!</span>
+        <svg class="w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="m1 9 4-4-4-4" />
+        </svg>
+      </a>
+      <h1
+        class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+        SocialLink™</h1>
+      <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-200">Here at Flowbite
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et mollis magna. In purus eros, volutpat eget
+        massa ac, feugiat interdum dui. Quisque ut condimentum sapien, sed congue eros. Morbi a vulputate dui. Nam lorem
+        turpis, laoreet quis lacus eu, finibus accumsan tellus. In non luctus mauris. Aliquam consectetur mollis massa
+        et iaculis.</p>
+      <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
+        <a href="{{ url_for('home') }}"
+          class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+          Get started
+          <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 5h12m0 0L9 1m4 4L9 9" />
+          </svg>
+        </a>
+        <a href="#features"
+          class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+          Learn more
+        </a>
       </div>
-    </section>
-  </body>
+    </div>
+    <div
+      class="bg-gradient-to-b from-blue-50 to-transparent dark:from-blue-900 w-full h-full absolute top-0 left-0 z-0">
+    </div>
+  </section>
+
+  <div class="m-8 p-16 bg-gray-900 rounded-lg" id="features">
+    <ol class=" relative border-s border-gray-200 dark:border-gray-700">
+      <li class="mb-10 ms-6">
+        <span
+          class="text-white font-bold absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+          1
+        </span>
+        <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+          Select Post Type
+        </h3>
+        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">Choose between Text, Media, Carousel Post
+        </p>
+      </li>
+      <li class="mb-10 ms-6">
+        <span
+          class="text-white font-bold absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+          2
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Upload Content</h3>
+        <p class="text-base font-normal text-gray-500 dark:text-gray-400">Upload your content easily!</p>
+      </li>
+      <li class="ms-6 mb-10">
+        <span
+          class="text-white font-bold absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+          3
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Select Platforms</h3>
+        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
+          Choose from a wide range of social media platforms. Choose the ones you want to post to.
+        </p>
+      </li>
+
+      <li class="ms-6 mb-10">
+        <span
+          class="text-white font-bold absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+          3
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Configure Captions and Tags</h3>
+        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
+          Write your captions and tags. Use an alternative caption for any specific platform.
+        </p>
+      </li>
+
+      <li class="ms-6 mb-10">
+        <span
+          class="text-white font-bold absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+          3
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Click Post!</h3>
+        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
+          Instantly post to all selected social media applications!
+        </p>
+      </li>
+
+      <li class="ms-6 mb-10">
+        <span
+          class="text-white font-bold absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+          3
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">View History</h3>
+        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
+          Go through your posting history. See what posts you have made, and to which platforms.
+        </p>
+      </li>
+    </ol>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-8 m-8">
+    <div class="bg-gray-900 rounded-lg p-8 md:p-12">
+      <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Start with Flowbite Design System</h2>
+      <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Static websites are now used to bootstrap
+        lots of websites and are becoming the basis for a variety of tools that even influence both web designers and
+        developers.</p>
+    </div>
+    <div class="bg-gray-900 rounded-lg p-8 md:p-12">
+      <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Best react libraries around the web</h2>
+      <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Static websites are now used to bootstrap
+        lots of websites and are becoming the basis for a variety of tools that even influence both web designers and
+        developers.</p>
+    </div>
+  </div>
+
+  <footer class="bg-white rounded-lg shadow-sm m-8 dark:bg-gray-800">
+    <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 <span
+          class="hover:underline">SocialLink™</span>. All Rights Reserved.
+      </span>
+      <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+      </ul>
+    </div>
+  </footer>
+
+</body>
+
 </html>
