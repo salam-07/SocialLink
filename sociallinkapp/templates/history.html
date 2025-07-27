@@ -1,4 +1,124 @@
 {% extends 'layout.html' %}
 
-<!-- This file is for the home page of the application-->
-{% block content %} {% endblock %}
+<!-- This file is for the posting history page-->
+{% block content %}
+
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-white mb-2">Posting History</h1>
+    <p class="text-gray-400">View all your previous posts and their details</p>
+</div>
+
+{% if posts %}
+<div class="space-y-4">
+    {% for post in posts %}
+    <div class="bg-gray-800 border border-gray-600 rounded-lg p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <!-- Post Content -->
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-2">
+                    <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                     {% if post.post_type == 'media' %}bg-blue-100 text-blue-800{% else %}bg-green-100 text-green-800{% endif %}">
+                        {% if post.post_type == 'media' %}
+                        <i class="material-symbols-outlined text-xs mr-1">image</i>
+                        Media Post
+                        {% else %}
+                        <i class="material-symbols-outlined text-xs mr-1">text_fields</i>
+                        Text Post
+                        {% endif %}
+                    </span>
+                    <span class="text-xs text-gray-400">
+                        {{ post.date_posted.strftime('%B %d, %Y at %I:%M %p') }}
+                    </span>
+                </div>
+
+                <!-- Post Content Display -->
+                <div class="mb-3">
+                    {% if post.post_type == 'media' %}
+                    <div class="flex items-center space-x-3">
+                        {% set file_ext = post.content.split('.')[-1].lower() %}
+                        {% if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'svg'] %}
+                        <img src="{{ post.content }}" alt="Posted media"
+                            class="w-16 h-16 object-cover rounded border border-gray-500">
+                        {% elif file_ext in ['mp4', 'mov', 'avi', 'webm'] %}
+                        <video class="w-16 h-16 object-cover rounded border border-gray-500">
+                            <source src="{{ post.content }}" type="video/{{ file_ext }}">
+                        </video>
+                        {% else %}
+                        <div
+                            class="w-16 h-16 bg-gray-700 rounded border border-gray-500 flex items-center justify-center">
+                            <i class="material-symbols-outlined text-gray-400">description</i>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p class="text-sm text-white">Media file uploaded</p>
+                            <p class="text-xs text-gray-400">{{ post.content.split('/')[-1] }}</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="bg-gray-900 rounded-lg p-3 border border-gray-700">
+                        <p class="text-white text-sm">{{ post.content }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Platforms -->
+                <div class="flex flex-wrap gap-2">
+                    {% for platform_id in post.get_platforms_list() %}
+                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-700 text-gray-300">
+                        {% if platform_id == 'facebook' %}
+                        <img src="/static/icons/facebook.png" alt="Facebook" class="w-3 h-3 mr-1">
+                        Facebook
+                        {% elif platform_id == 'x' %}
+                        <img src="/static/icons/x.png" alt="X" class="w-3 h-3 mr-1">
+                        X
+                        {% elif platform_id == 'instagram' %}
+                        <img src="/static/icons/instagram.png" alt="Instagram" class="w-3 h-3 mr-1">
+                        Instagram
+                        {% elif platform_id == 'linkedin' %}
+                        <img src="/static/icons/linkedin.png" alt="LinkedIn" class="w-3 h-3 mr-1">
+                        LinkedIn
+                        {% elif platform_id == 'threads' %}
+                        <img src="/static/icons/threads.png" alt="Threads" class="w-3 h-3 mr-1">
+                        Threads
+                        {% elif platform_id == 'reddit' %}
+                        <img src="/static/icons/reddit.png" alt="Reddit" class="w-3 h-3 mr-1">
+                        Reddit
+                        {% endif %}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Post ID and Actions -->
+            <div class="flex flex-col items-end gap-2">
+                <span class="text-xs text-gray-500 font-mono">ID: {{ post.id[:8] }}...</span>
+                <div class="flex gap-1">
+                    <button class="p-1.5 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded">
+                        <i class="material-symbols-outlined text-sm">edit</i>
+                    </button>
+                    <button class="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-700 rounded">
+                        <i class="material-symbols-outlined text-sm">delete</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-12">
+    <div class="max-w-md mx-auto">
+        <i class="material-symbols-outlined text-6xl text-gray-600 mb-4">history</i>
+        <h3 class="text-lg font-medium text-white mb-2">No posts yet</h3>
+        <p class="text-gray-400 mb-6">You haven't created any posts yet. Start by creating your first post!</p>
+        <a href="{{ url_for('create_post') }}"
+            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="material-symbols-outlined mr-2">add</i>
+            Create First Post
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

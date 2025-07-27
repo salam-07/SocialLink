@@ -175,4 +175,150 @@ function updateSelectedPlatformsDisplay() {
         selectedPlatformsDisplay.textContent = platformNames.join(', ');
         selectedPlatformsDisplay.className = 'text-blue-400';
     }
+
+    // Update form validation
+    updateSubmitButtonState();
 }
+
+// Form submission functionality
+function updateSubmitButtonState() {
+    const submitBtn = document.getElementById('submit-post-btn');
+    const submitBtnText = document.getElementById('submit-btn-text');
+    const submitStatus = document.getElementById('submit-status');
+    const postTypeInput = document.getElementById('post-type-input');
+    const contentInput = document.getElementById('content-input');
+    const platformsInput = document.getElementById('platforms-input');
+
+    // Determine current post type
+    const isMediaMode = !document.getElementById('media-upload-section').classList.contains('hidden');
+    const currentPostType = isMediaMode ? 'media' : 'text';
+
+    // Get current content based on mode
+    let currentContent = '';
+    if (currentPostType === 'media') {
+        // Check if file is uploaded (look for uploaded file preview)
+        const uploadedFilePreview = document.getElementById('uploaded-file-preview');
+        const hasUploadedFile = uploadedFilePreview && !uploadedFilePreview.classList.contains('hidden');
+        currentContent = hasUploadedFile ? 'media_uploaded' : '';
+    } else {
+        // Get text content
+        const textArea = document.querySelector('#text-form textarea');
+        currentContent = textArea ? textArea.value.trim() : '';
+    }
+
+    // Check if we have platforms selected and content
+    const hasContent = currentContent.length > 0;
+    const hasPlatforms = selectedPlatforms.length > 0;
+    const canSubmit = hasContent && hasPlatforms;
+
+    // Update hidden form inputs
+    postTypeInput.value = currentPostType;
+    contentInput.value = currentContent;
+
+    // Update platforms input with individual hidden inputs
+    // Clear existing platform inputs
+    const existingPlatformInputs = document.querySelectorAll('input[name="selected_platforms"]');
+    existingPlatformInputs.forEach(input => input.remove());
+
+    // Add new platform inputs
+    selectedPlatforms.forEach(platformId => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'selected_platforms';
+        input.value = platformId;
+        document.getElementById('final-post-form').appendChild(input);
+    });
+
+    // Update button state
+    if (canSubmit) {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('disabled:bg-gray-600', 'disabled:cursor-not-allowed');
+        submitBtnText.textContent = `Post to ${selectedPlatforms.length} Platform${selectedPlatforms.length > 1 ? 's' : ''}`;
+        submitStatus.classList.add('hidden');
+    } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('disabled:bg-gray-600', 'disabled:cursor-not-allowed');
+        submitBtnText.textContent = 'Upload Post';
+        submitStatus.classList.remove('hidden');
+
+        // Update status message
+        if (!hasPlatforms && !hasContent) {
+            submitStatus.textContent = 'Please select platforms and add content before posting.';
+        } else if (!hasPlatforms) {
+            submitStatus.textContent = 'Please select at least one platform.';
+        } else if (!hasContent) {
+            if (currentPostType === 'media') {
+                submitStatus.textContent = 'Please upload a file or switch to text mode.';
+            } else {
+                submitStatus.textContent = 'Please enter text content.';
+            }
+        }
+    }
+}
+
+// Update form state when switching modes
+function showMedia() {
+    // Show media upload section
+    document.getElementById('media-upload-section').classList.remove('hidden');
+    // Hide text form section
+    document.getElementById('text-form').classList.add('hidden');
+    // Show caption section for media posts
+    document.getElementById('caption-section').classList.remove('hidden');
+
+    // Update tab styles
+    const mediaBtn = document.getElementById('media-btn');
+    const textBtn = document.getElementById('text-btn');
+
+    // Media tab - active state
+    mediaBtn.className = 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500';
+    mediaBtn.setAttribute('aria-current', 'page');
+
+    // Text tab - inactive state
+    textBtn.className = 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300';
+    textBtn.removeAttribute('aria-current');
+
+    // Show all platforms for media
+    filterPlatforms('media');
+
+    // Update form state
+    updateSubmitButtonState();
+}
+
+function showText() {
+    // Hide media upload section
+    document.getElementById('media-upload-section').classList.add('hidden');
+    // Show text form section
+    document.getElementById('text-form').classList.remove('hidden');
+    // Hide caption section for text posts
+    document.getElementById('caption-section').classList.add('hidden');
+
+    // Update tab styles
+    const mediaBtn = document.getElementById('media-btn');
+    const textBtn = document.getElementById('text-btn');
+
+    // Media tab - inactive state
+    mediaBtn.className = 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300';
+    mediaBtn.removeAttribute('aria-current');
+
+    // Text tab - active state
+    textBtn.className = 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500';
+    textBtn.setAttribute('aria-current', 'page');
+
+    // Show only text-compatible platforms
+    filterPlatforms('text');
+
+    // Update form state
+    updateSubmitButtonState();
+}
+
+// Add event listeners for text input
+document.addEventListener('DOMContentLoaded', function () {
+    // Listen for text input changes
+    const textArea = document.querySelector('#text-form textarea');
+    if (textArea) {
+        textArea.addEventListener('input', updateSubmitButtonState);
+    }
+
+    // Initial form state update
+    setTimeout(updateSubmitButtonState, 100);
+});

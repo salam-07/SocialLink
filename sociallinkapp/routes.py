@@ -2,10 +2,12 @@
 
 # libraries import
 from flask import render_template, url_for, redirect, flash, request, abort, session
+import json
 
 # local imports
-from sociallinkapp import app
+from sociallinkapp import app, db
 from sociallinkapp.file_handler import handle_file_upload
+from sociallinkapp.models import Post
 
 
 # route for the landing page
@@ -62,9 +64,63 @@ def remove_upload():
         flash('File removed successfully!', 'success')
     return redirect(url_for('create_post'))
 
+@app.route('/submit_post', methods=['POST'])
+def submit_post():
+    """Handle final post submission to database"""
+    try:
+        # Get form data
+        post_type = request.form.get('post_type')  # 'text' or 'media'
+        content = request.form.get('content', '')
+        selected_platforms = request.form.getlist('selected_platforms')
+        
+        # Validate required data
+        if not post_type:
+            flash('Post type is required!', 'error')
+            return redirect(url_for('create_post'))
+        
+        if not selected_platforms:
+            flash('Please select at least one platform!', 'error')
+            return redirect(url_for('create_post'))
+        
+        # Handle content based on post type
+        if post_type == 'media':
+            # Check if there's an uploaded file in session
+            if 'uploaded_file' not in session:
+                flash('Please upload a file for media posts!', 'error')
+                return redirect(url_for('create_post'))
+            content = session['uploaded_file']['file_path']
+        elif post_type == 'text':
+            if not content.strip():
+                flash('Text content is required for text posts!', 'error')
+                return redirect(url_for('create_post'))
+        
+        # Create new post
+        new_post = Post(
+            post_type=post_type,
+            content=content,
+            platforms=json.dumps(selected_platforms)
+        )
+        
+        # Save to database
+        db.session.add(new_post)
+        db.session.commit()
+        
+        # Clear session data
+        session.pop('uploaded_file', None)
+        
+        flash(f'Post submitted successfully to {len(selected_platforms)} platform(s)!', 'success')
+        return redirect(url_for('create_post'))
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error submitting post: {str(e)}', 'error')
+        return redirect(url_for('create_post'))
+
 @app.route('/history')
 def history():
-    return render_template('history.html', heading="Posting History", title="Posting History")
+    # Get all posts from database, ordered by most recent first
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template('history.html', heading="Posting History", title="Posting History", posts=posts)
 
 @app.route('/accounts')
 def accounts():
