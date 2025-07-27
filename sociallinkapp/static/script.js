@@ -30,17 +30,17 @@ function showMedia() {
     // Hide text form section
     document.getElementById('text-form').classList.add('hidden');
 
-    // Update button styles
+    // Update tab styles
     const mediaBtn = document.getElementById('media-btn');
     const textBtn = document.getElementById('text-btn');
 
-    // Media button - active state
-    mediaBtn.classList.remove('text-gray-900');
-    mediaBtn.classList.add('text-blue-700');
+    // Media tab - active state
+    mediaBtn.className = 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500';
+    mediaBtn.setAttribute('aria-current', 'page');
 
-    // Text button - inactive state
-    textBtn.classList.remove('text-blue-700');
-    textBtn.classList.add('text-gray-900');
+    // Text tab - inactive state
+    textBtn.className = 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300';
+    textBtn.removeAttribute('aria-current');
 }
 
 function showText() {
@@ -49,17 +49,17 @@ function showText() {
     // Show text form section
     document.getElementById('text-form').classList.remove('hidden');
 
-    // Update button styles
+    // Update tab styles
     const mediaBtn = document.getElementById('media-btn');
     const textBtn = document.getElementById('text-btn');
 
-    // Media button - inactive state
-    mediaBtn.classList.remove('text-blue-700');
-    mediaBtn.classList.add('text-gray-900');
+    // Media tab - inactive state
+    mediaBtn.className = 'inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300';
+    mediaBtn.removeAttribute('aria-current');
 
-    // Text button - active state
-    textBtn.classList.remove('text-gray-900');
-    textBtn.classList.add('text-blue-700');
+    // Text tab - active state
+    textBtn.className = 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500';
+    textBtn.setAttribute('aria-current', 'page');
 }
 
 // Accordion functionality
