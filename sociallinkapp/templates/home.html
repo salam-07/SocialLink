@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
-<!-- Modern Dashboard for SocialLink -->
+<!--Dashboard-->
+<!--Data is passed to this page through the flask route-->
 {% block content %}
 
 <!-- Welcome Section -->
@@ -11,7 +12,7 @@
     </div>
 </div>
 
-<!-- Statistics Cards -->
+<!-- Statistics Cards on top with counts -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <!-- Total Posts Card -->
     <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 hover:bg-gray-750 transition-colors">
@@ -80,7 +81,7 @@
                 </a>
             </div>
 
-            {% if recent_posts %}
+            {% if recent_posts %} <!--If recent posts exist, then show-->
             <div class="space-y-4">
                 {% for post in recent_posts %}
                 <div class="bg-gray-900 border border-gray-700 rounded-lg p-4 hover:bg-gray-850 transition-colors">

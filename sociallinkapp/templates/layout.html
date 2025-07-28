@@ -14,7 +14,6 @@
   
   <!-- JavaScript Modules -->
   <script src="/static/js/sidebar.js"></script>
-  <script src="/static/js/accordion.js"></script>
   <script src="/static/js/platforms.js"></script>
   <script src="/static/js/form-validation.js"></script>
   <script src="/static/js/tabs.js"></script>
@@ -22,12 +21,15 @@
   
   <!-- Page-specific JavaScript -->
   {% if title == "Dashboard" %}
-  <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+  {% elif title == "Help" %}
+    <script src="/static/js/accordion.js"></script>
   {% endif %}
 
 </head>
 
 <body class="bg-custom-background">
+  <!--Hamburger Menu Button shown on mobile devices only-->
   <button data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar"
     aria-controls="separator-sidebar" type="button"
     class="inline-flex items-center p-3 mt-2 ms-3 text-lg text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -35,15 +37,16 @@
     <i class="material-symbols-outlined">menu</i>
   </button>
 
+  <!--Side Navigation Bar-->
   <aside id="separator-sidebar"
     class="shadow-xl fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Sidebar">
     <div class="shadow-xl h-full px-3 py-4 overflow-y-auto nav-bg">
+      <!--Links and Icons-->
       <ul class="space-y-2 font-medium">
         <li>
           <a href="{{ url_for('home') }}"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            <!-- Home/Dashboard icon -->
             <i class="material-symbols-outlined">home</i>
             <span class="ms-3">Dashboard</span>
           </a>
@@ -51,7 +54,6 @@
         <li>
           <a href="{{ url_for('create_post') }}"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            <!-- Plus icon for Create a Post -->
             <i class="material-symbols-outlined">add_2</i>
             <span class="flex-1 ms-3 whitespace-nowrap">Create a Post</span>
           </a>
@@ -59,7 +61,6 @@
         <li>
           <a href="{{ url_for('history') }}"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            <!-- History icon -->
             <i class="material-symbols-outlined">history</i>
             <span class="flex-1 ms-3 whitespace-nowrap">Posting History</span>
           </a>
@@ -67,7 +68,6 @@
         <li>
           <a href="{{ url_for('accounts') }}"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            <!-- User icon for Manage Accounts -->
             <i class="material-symbols-outlined">manage_accounts</i>
             <span class="flex-1 ms-3 whitespace-nowrap">Manage Accounts</span>
           </a>
@@ -77,7 +77,6 @@
         <li>
           <a href="{{ url_for('help') }}"
             class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-            <!-- Book icon for Documentation -->
             <i class="material-symbols-outlined">help</i>
             <span class="ms-3">Help</span>
           </a>
@@ -85,7 +84,6 @@
         <li>
           <a href="{{ url_for('landing') }}"
             class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-            <!-- Book icon for Documentation -->
             <i class="material-symbols-outlined">bookmarks</i>
             <span class="ms-3">About</span>
           </a>
@@ -93,6 +91,8 @@
       </ul>
     </div>
   </aside>
+
+  <!--Heading for every page-->
   <div class="flex flex-col p-4 sm:ml-64 justify-between gap-7">
     <div class="flex items-center gap-4">
       <div class="flex-1 h-px bg-gray-300"></div>
@@ -101,6 +101,7 @@
     </div>
     <div>{% block content %} {% endblock %}</div>
   </div>
+
 </body>
 
 </html>

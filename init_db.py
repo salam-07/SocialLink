@@ -1,5 +1,5 @@
 # run this script to initialize the database.
-# needs to be run only
+# needs to be run only once
 
 from sociallinkapp import app, db
 

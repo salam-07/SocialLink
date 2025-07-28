@@ -60,7 +60,7 @@ def home():
     
     return render_template('home.html', heading="Dashboard", title="Dashboard", **dashboard_data)
 
-#
+#create new post route
 @app.route('/create', methods=['GET', 'POST'])
 def create_post():
     uploaded_file = None
@@ -69,7 +69,7 @@ def create_post():
         # Handle file upload
         result = handle_file_upload('dropzone-file')
         
-        if result['success']:
+        if result['success']: #if success=True
             # Store uploaded file info in session
             session['uploaded_file'] = {
                 'filename': result['filename'],
@@ -79,7 +79,7 @@ def create_post():
             flash(f'File uploaded successfully!', 'success')
         else:
             flash(f'Upload failed: {result["message"]}', 'error')
-        
+    
         return redirect(url_for('create_post'))
     
     # GET request - show the form
@@ -97,17 +97,17 @@ def create_post():
     ]
     return render_template('create_post.html', heading="Publish Posts", title="Publish Posts", platforms=platforms, uploaded_file=uploaded_file)
 
+# Remove uploaded file route
 @app.route('/remove_upload')
 def remove_upload():
-    """Remove uploaded file from session"""
     if 'uploaded_file' in session:
         session.pop('uploaded_file', None)
         flash('File removed successfully!', 'success')
     return redirect(url_for('create_post'))
 
+# enter post in database
 @app.route('/submit_post', methods=['POST'])
 def submit_post():
-    """Handle final post submission to database"""
     try:
         # Get form data
         post_type = request.form.get('post_type')  # 'text' or 'media'
@@ -157,16 +157,18 @@ def submit_post():
         flash(f'Error submitting post: {str(e)}', 'error')
         return redirect(url_for('create_post'))
 
+# post history route
 @app.route('/history')
 def history():
-    # Get all posts from database, ordered by most recent first
-    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    posts = Post.query.order_by(Post.date_posted.desc()).all() # order by date
     return render_template('history.html', heading="Posting History", title="Posting History", posts=posts)
 
+# account management route
 @app.route('/accounts')
 def accounts():
     return render_template('accounts.html', heading="Manage Accounts", title="Manage Accounts")
 
+# help page route
 @app.route('/help')
 def help():
     faq_data = [

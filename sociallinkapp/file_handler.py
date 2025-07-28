@@ -1,3 +1,5 @@
+# handle file uploads
+
 import os
 import uuid
 from flask import current_app, flash, request
@@ -52,18 +54,11 @@ def validate_file_size(file):
     file_size = file.tell()
     file.seek(0)  # Reset file pointer
     
-    return file_size <= MAX_FILE_SIZE
+    return file_size <= MAX_FILE_SIZE # return bool
 
 def handle_file_upload(file_key='file'):
-    """
-    Handle file upload with security measures.
-    
-    Args:
-        file_key (str): The key name for the file in the request
-        
-    Returns:
-        dict: Result dictionary with success status, message, and filename
-    """
+    # call functions and handle file input. Returns dict
+
     result = {
         'success': False,
         'message': '',
@@ -120,15 +115,7 @@ def handle_file_upload(file_key='file'):
     return result
 
 def delete_uploaded_file(filename):
-    """
-    Delete an uploaded file.
-    
-    Args:
-        filename (str): The filename to delete
-        
-    Returns:
-        bool: True if deletion was successful, False otherwise
-    """
+    # perform deletion of file upload. Return bool for success
     try:
         upload_path = os.path.join(os.getcwd(), UPLOAD_FOLDER)
         file_path = os.path.join(upload_path, filename)
@@ -146,15 +133,7 @@ def delete_uploaded_file(filename):
         return False
 
 def get_file_info(filename):
-    """
-    Get information about an uploaded file.
-    
-    Args:
-        filename (str): The filename to get info for
-        
-    Returns:
-        dict: File information including size, extension, and path
-    """
+    # function to get file information. Return Dictionary
     try:
         upload_path = os.path.join(os.getcwd(), UPLOAD_FOLDER)
         file_path = os.path.join(upload_path, filename)
