@@ -1,4 +1,4 @@
-# run this file to serve application for development
+# run this file to serve application for development and testing locally
 
 from sociallinkapp import app
 

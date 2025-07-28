@@ -9,45 +9,22 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg', 'mp4', 'mov', 'avi', '
 MAX_FILE_SIZE = 16 * 1024 * 1024  # 16MB
 
 def allowed_file(filename):
-    """
-    Check if the file extension is allowed.
-    
-    Args:
-        filename (str): The name of the file to check
-        
-    Returns:
-        bool: True if file extension is allowed, False otherwise
-    """
+    # returns True if the file has an allowed extension
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def get_file_extension(filename):
-    """
-    Get the file extension from filename.
-    
-    Args:
-        filename (str): The name of the file
-        
-    Returns:
-        str: The file extension (lowercase)
-    """
+    # get the file extension from the filename
     if '.' in filename:
         return filename.rsplit('.', 1)[1].lower()
     return ''
 
 def generate_unique_filename(original_filename):
-    """
-    Generate a unique filename while preserving the original extension.
-    
-    Args:
-        original_filename (str): The original filename
-        
-    Returns:
-        str: A unique filename with UUID prefix
-    """
+    #create a unique random filename for safety purposes
+
     # Get the file extension
     extension = get_file_extension(original_filename)
-    
+
     # Generate a unique identifier
     unique_id = str(uuid.uuid4())
     
@@ -60,9 +37,7 @@ def generate_unique_filename(original_filename):
     return new_filename
 
 def ensure_upload_directory():
-    """
-    Ensure the upload directory exists, create it if it doesn't.
-    """
+    # create upload directory where it is not available
     upload_path = os.path.join(os.getcwd(), UPLOAD_FOLDER)
     if not os.path.exists(upload_path):
         os.makedirs(upload_path)
@@ -70,15 +45,8 @@ def ensure_upload_directory():
     return upload_path
 
 def validate_file_size(file):
-    """
-    Validate file size.
-    
-    Args:
-        file: Flask file object
-        
-    Returns:
-        bool: True if file size is within limits, False otherwise
-    """
+    # valid file size, Max 16MB. Returns True if Valid
+
     # Get file size
     file.seek(0, os.SEEK_END)
     file_size = file.tell()

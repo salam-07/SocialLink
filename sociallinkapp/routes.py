@@ -16,10 +16,51 @@ from sociallinkapp.models import Post
 def landing():
     return render_template('landing.html')
 
+# route for dashboard
 @app.route('/home')
 def home():
-    return render_template('home.html', heading="Dashboard", title="Dashboard")
+    # Get dashboard statistics
+    from datetime import datetime, timedelta
+    from sqlalchemy import func
+    
+    # Total posts
+    total_posts = Post.query.count()
+    
+    # Posts this week
+    week_ago = datetime.utcnow() - timedelta(days=7)
+    posts_this_week = Post.query.filter(Post.date_posted >= week_ago).count()
+    
+    # Posts by type
+    media_posts = Post.query.filter_by(post_type='media').count()
+    text_posts = Post.query.filter_by(post_type='text').count()
+    
+    # Recent posts (last 5)
+    recent_posts = Post.query.order_by(Post.date_posted.desc()).limit(5).all()
+    
+    # Platform usage statistics
+    platform_stats = {}
+    all_posts = Post.query.all()
+    
+    for post in all_posts:
+        platforms = post.get_platforms_list()
+        for platform in platforms:
+            platform_stats[platform] = platform_stats.get(platform, 0) + 1
+    
+    # Sort platforms by usage
+    platform_stats = dict(sorted(platform_stats.items(), key=lambda x: x[1], reverse=True))
+    
+    dashboard_data = {
+        'total_posts': total_posts,
+        'posts_this_week': posts_this_week,
+        'media_posts': media_posts,
+        'text_posts': text_posts,
+        'recent_posts': recent_posts,
+        'platform_stats': platform_stats
+    }
+    
+    return render_template('home.html', heading="Dashboard", title="Dashboard", **dashboard_data)
 
+#
 @app.route('/create', methods=['GET', 'POST'])
 def create_post():
     uploaded_file = None

@@ -20,6 +20,11 @@
   <script src="/static/js/tabs.js"></script>
   <script src="/static/js/main.js"></script>
   
+  <!-- Page-specific JavaScript -->
+  {% if title == "Dashboard" %}
+  <script src="/static/js/dashboard.js"></script>
+  {% endif %}
+
 </head>
 
 <body class="bg-custom-background">
