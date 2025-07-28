@@ -211,7 +211,7 @@
                         <span class="text-white font-medium mr-2">{{ count }}</span>
                         <div class="w-16 bg-gray-700 rounded-full h-2">
                             <div class="bg-blue-600 h-2 rounded-full" 
-                                 style="width: {% if total_posts > 0 %}{{ (count / total_posts * 100) | round(1) }}{% else %}0%{% endif %}"></div>
+                                 style="width: {% if total_platform_uses > 0 %}{{ (count / total_platform_uses * 100) | round(1) }}%{% else %}0%{% endif %}"></div>
                         </div>
                     </div>
                 </div>

@@ -40,11 +40,13 @@ def home():
     # Platform usage statistics
     platform_stats = {}
     all_posts = Post.query.all()
+    total_platform_uses = 0
     
     for post in all_posts:
         platforms = post.get_platforms_list()
         for platform in platforms:
             platform_stats[platform] = platform_stats.get(platform, 0) + 1
+            total_platform_uses += 1
     
     # Sort platforms by usage
     platform_stats = dict(sorted(platform_stats.items(), key=lambda x: x[1], reverse=True))
@@ -55,7 +57,8 @@ def home():
         'media_posts': media_posts,
         'text_posts': text_posts,
         'recent_posts': recent_posts,
-        'platform_stats': platform_stats
+        'platform_stats': platform_stats,
+        'total_platform_uses': total_platform_uses
     }
     
     return render_template('home.html', heading="Dashboard", title="Dashboard", **dashboard_data)
