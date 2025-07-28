@@ -8,8 +8,10 @@
     <p class="text-gray-400">View all your previous posts and their details</p>
 </div>
 
+<!--Show if posts exist-->
 {% if posts %}
 <div class="space-y-4">
+    <!--Loop through all posts-->
     {% for post in posts %}
     <div class="bg-gray-800 border border-gray-600 rounded-lg p-4 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -36,19 +38,16 @@
                 <div class="mb-3">
                     {% if post.post_type == 'media' %}
                     <div class="flex items-center space-x-3">
+                        <!--If Image file, show its preview-->
                         {% set file_ext = post.content.split('.')[-1].lower() %}
                         {% if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'svg'] %}
                         <img src="{{ post.content }}" alt="Posted media"
                             class="w-16 h-16 object-cover rounded border border-gray-500">
+                        <!--If video file, show it-->
                         {% elif file_ext in ['mp4', 'mov', 'avi', 'webm'] %}
                         <video class="w-16 h-16 object-cover rounded border border-gray-500">
                             <source src="{{ post.content }}" type="video/{{ file_ext }}">
                         </video>
-                        {% else %}
-                        <div
-                            class="w-16 h-16 bg-gray-700 rounded border border-gray-500 flex items-center justify-center">
-                            <i class="material-symbols-outlined text-gray-400">description</i>
-                        </div>
                         {% endif %}
                         <div>
                             <p class="text-sm text-white">Media file uploaded</p>
@@ -90,17 +89,9 @@
                 </div>
             </div>
 
-            <!-- Post ID and Actions -->
+            <!-- Post ID -->
             <div class="flex flex-col items-end gap-2">
                 <span class="text-xs text-gray-500 font-mono">ID: {{ post.id[:8] }}...</span>
-                <div class="flex gap-1">
-                    <button class="p-1.5 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded">
-                        <i class="material-symbols-outlined text-sm">edit</i>
-                    </button>
-                    <button class="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-700 rounded">
-                        <i class="material-symbols-outlined text-sm">delete</i>
-                    </button>
-                </div>
             </div>
         </div>
     </div>

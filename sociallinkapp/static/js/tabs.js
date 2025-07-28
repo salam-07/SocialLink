@@ -1,4 +1,3 @@
-// Tab switching functionality for Media/Text posts
 function showMedia() {
     // Show media upload section
     document.getElementById('media-upload-section').classList.remove('hidden');
@@ -20,14 +19,7 @@ function showMedia() {
     textBtn.removeAttribute('aria-current');
 
     // Show all platforms for media
-    if (typeof filterPlatforms === 'function') {
-        filterPlatforms('media');
-    }
-
-    // Update form state
-    if (typeof updateSubmitButtonState === 'function') {
-        updateSubmitButtonState();
-    }
+    filterPlatforms('media');
 }
 
 function showText() {
@@ -51,12 +43,5 @@ function showText() {
     textBtn.setAttribute('aria-current', 'page');
 
     // Show only text-compatible platforms
-    if (typeof filterPlatforms === 'function') {
-        filterPlatforms('text');
-    }
-
-    // Update form state
-    if (typeof updateSubmitButtonState === 'function') {
-        updateSubmitButtonState();
-    }
+    filterPlatforms('text');
 }
