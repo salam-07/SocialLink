@@ -15,7 +15,7 @@ except ValueError as e:
 
 app = Flask(__name__) # create Flask app instance
 app.secret_key = Config.SECRET_KEY # secret key from environment
-app.config['SQLALCHEMY_DATABASE_URI'] = Config.DATABASE_URL # database URL from environment
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db' # database URL from environment
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # disable modification tracking
 
 db = SQLAlchemy(app) # create database instance
