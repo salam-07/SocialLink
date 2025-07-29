@@ -1,7 +1,12 @@
+# Environment variables (contains sensitive credentials)
 .env
 .venv
+
+# Python cache files
 /__pycache__/
 *.pyc
+
+# User uploads
 /static/uploads/
 /uploads/
 *.png
@@ -10,4 +15,6 @@
 *.mov
 *.avi
 *.mp4
+
+# Database files
 *db
