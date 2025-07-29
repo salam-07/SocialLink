@@ -1,69 +1,14 @@
-# contains all the routes needed for application
-
-# libraries import
-from flask import render_template, url_for, redirect, flash, request, abort, session
+"""
+Post-related routes - Creating, submitting, and viewing posts
+"""
+from flask import render_template, url_for, redirect, flash, request, session
 import json
-
-# local imports
 from sociallinkapp import app, db
 from sociallinkapp.file_handler import handle_file_upload
 from sociallinkapp.models import Post
+from sociallinkapp.upload_manager import upload_manager
 
-
-# route for the landing page
-@app.route('/')
-@app.route('/landing')
-def landing():
-    return render_template('landing.html')
-
-# route for dashboard
-@app.route('/home')
-def home():
-    # Get dashboard statistics
-    from datetime import datetime, timedelta
-    from sqlalchemy import func
-    
-    # Total posts
-    total_posts = Post.query.count()
-    
-    # Posts this week
-    week_ago = datetime.utcnow() - timedelta(days=7)
-    posts_this_week = Post.query.filter(Post.date_posted >= week_ago).count()
-    
-    # Posts by type
-    media_posts = Post.query.filter_by(post_type='media').count()
-    text_posts = Post.query.filter_by(post_type='text').count()
-    
-    # Recent posts (last 5)
-    recent_posts = Post.query.order_by(Post.date_posted.desc()).limit(5).all()
-    
-    # Platform usage statistics
-    platform_stats = {}
-    all_posts = Post.query.all()
-    total_platform_uses = 0
-    
-    for post in all_posts:
-        platforms = post.get_platforms_list()
-        for platform in platforms:
-            platform_stats[platform] = platform_stats.get(platform, 0) + 1
-            total_platform_uses += 1
-    
-    # Sort platforms by usage
-    platform_stats = dict(sorted(platform_stats.items(), key=lambda x: x[1], reverse=True))
-    
-    dashboard_data = {
-        'total_posts': total_posts,
-        'posts_this_week': posts_this_week,
-        'media_posts': media_posts,
-        'text_posts': text_posts,
-        'recent_posts': recent_posts,
-        'platform_stats': platform_stats,
-        'total_platform_uses': total_platform_uses
-    }
-    
-    return render_template('home.html', heading="Dashboard", title="Dashboard", **dashboard_data)
-
-#create media post route
+# create media post route
 @app.route('/create-media', methods=['GET', 'POST'])
 def create_media_post():
     uploaded_file = None
@@ -100,7 +45,7 @@ def create_media_post():
     ]
     return render_template('create_media_post.html', heading="Create Media Post", title="Create Media Post", platforms=platforms, uploaded_file=uploaded_file)
 
-#create text post route
+# create text post route
 @app.route('/create-text', methods=['GET'])
 def create_text_post():
     platforms = [
@@ -149,19 +94,38 @@ def submit_media_post():
             platforms=json.dumps(selected_platforms)
         )
         
-        # Save to database
+        # Save to database for history
         db.session.add(new_post)
         db.session.commit()
         
         # Clear session data
         session.pop('uploaded_file', None)
         
-        flash(f'Media post submitted successfully to {len(selected_platforms)} platform(s)!', 'success')
+        # Immediately upload to platforms
+        upload_results = upload_manager.upload_to_multiple_platforms(new_post, selected_platforms)
+        
+        # Process upload results
+        successful_uploads = []
+        failed_uploads = []
+        
+        for platform, result in upload_results.items():
+            if result['success']:
+                successful_uploads.append(platform)
+            else:
+                failed_uploads.append(f"{platform}: {result['message']}")
+        
+        if successful_uploads:
+            flash(f'Successfully posted to: {", ".join(successful_uploads)}', 'success')
+        
+        if failed_uploads:
+            for error in failed_uploads:
+                flash(f'Failed to post - {error}', 'warning')
+        
         return redirect(url_for('create_media_post'))
         
     except Exception as e:
         db.session.rollback()
-        flash(f'Error submitting media post: {str(e)}', 'error')
+        flash(f'Error posting: {str(e)}', 'error')
         return redirect(url_for('create_media_post'))
 
 # Submit text post to database
@@ -189,54 +153,45 @@ def submit_text_post():
             platforms=json.dumps(selected_platforms)
         )
         
-        # Save to database
+        # Save to database for history
         db.session.add(new_post)
         db.session.commit()
         
-        flash(f'Text post submitted successfully to {len(selected_platforms)} platform(s)!', 'success')
+        # Immediately upload to platforms
+        upload_results = upload_manager.upload_to_multiple_platforms(new_post, selected_platforms)
+        
+        # Process upload results
+        successful_uploads = []
+        failed_uploads = []
+        
+        for platform, result in upload_results.items():
+            if result['success']:
+                successful_uploads.append(platform)
+            else:
+                failed_uploads.append(f"{platform}: {result['message']}")
+        
+        if successful_uploads:
+            flash(f'Successfully posted to: {", ".join(successful_uploads)}', 'success')
+        
+        if failed_uploads:
+            for error in failed_uploads:
+                flash(f'Failed to post - {error}', 'warning')
+        
         return redirect(url_for('create_text_post'))
         
     except Exception as e:
         db.session.rollback()
-        flash(f'Error submitting text post: {str(e)}', 'error')
+        flash(f'Error posting: {str(e)}', 'error')
         return redirect(url_for('create_text_post'))
 
 # post history route
 @app.route('/history')
 def history():
     posts = Post.query.order_by(Post.date_posted.desc()).all() # order by date
-    return render_template('history.html', heading="Posting History", title="Posting History", posts=posts)
+    return render_template('history.html', heading="Post History", title="Post History", posts=posts)
 
 # post detail route
 @app.route('/post/<post_id>')
 def post_detail(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post_detail.html', heading="Post Details", title="Post Details", post=post)
-
-# account management route
-@app.route('/accounts')
-def accounts():
-    return render_template('accounts.html', heading="Manage Accounts", title="Manage Accounts")
-
-# help page route
-@app.route('/help')
-def help():
-    faq_data = [
-        {
-            'id': 1,
-            'question': 'What is SocialLink?',
-            'answer': [
-                'SocialLink is a powerful social media management platform that allows you to create, schedule, and manage posts across multiple social media platforms from one centralized dashboard.',
-                'With SocialLink, you can streamline your social media workflow, save time, and maintain a consistent online presence across all your social media accounts.'
-            ]
-        },
-        {
-            'id': 2,
-            'question': 'What is SocialLink?',
-            'answer': [
-                'SocialLink is a powerful social media management platform that allows you to create, schedule, and manage posts across multiple social media platforms from one centralized dashboard.',
-                'With SocialLink, you can streamline your social media workflow, save time, and maintain a consistent online presence across all your social media accounts.'
-            ]
-        }
-    ]
-    return render_template('help.html', heading="Help", title="Help", faq_data=faq_data)
