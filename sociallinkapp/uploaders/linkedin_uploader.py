@@ -131,7 +131,19 @@ class LinkedInUploader(BaseUploader):
             response = requests.post(post_url, headers=headers, json=post_body)
             
             if response.status_code == 201:
-                return {'success': True, 'message': 'Post published successfully to LinkedIn'}
+                # Extract post ID from response to construct LinkedIn URL
+                response_data = response.json()
+                post_id = response_data.get('id', '')
+                
+                # Construct LinkedIn post URL
+                # LinkedIn post URLs follow the format: https://www.linkedin.com/feed/update/urn:li:activity:{activityId}
+                linkedin_url = f"https://www.linkedin.com/feed/update/{post_id}" if post_id else None
+                
+                return {
+                    'success': True, 
+                    'message': 'Post published successfully to LinkedIn',
+                    'url': linkedin_url
+                }
             else:
                 error_msg = f"LinkedIn API error {response.status_code}: {response.text}"
                 return {'success': False, 'message': error_msg}

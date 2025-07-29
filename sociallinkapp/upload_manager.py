@@ -27,7 +27,13 @@ class UploadManager:
         """Upload a post to multiple platforms"""
         results = {}
         for platform in platforms:
-            results[platform] = self.upload_post(post, platform)
+            result = self.upload_post(post, platform)
+            results[platform] = result
+            
+            # If upload was successful and returned a URL, save it to the post
+            if result['success'] and 'url' in result and result['url']:
+                post.set_platform_url(platform, result['url'])
+        
         return results
     
     def get_uploader(self, platform):

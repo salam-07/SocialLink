@@ -104,6 +104,12 @@ def submit_media_post():
         # Immediately upload to platforms
         upload_results = upload_manager.upload_to_multiple_platforms(new_post, selected_platforms)
         
+        # Save any platform URLs that were returned
+        try:
+            db.session.commit()  # Commit the URL updates
+        except Exception as e:
+            print(f"Error saving platform URLs: {e}")
+        
         # Process upload results
         successful_uploads = []
         failed_uploads = []
@@ -159,6 +165,12 @@ def submit_text_post():
         
         # Immediately upload to platforms
         upload_results = upload_manager.upload_to_multiple_platforms(new_post, selected_platforms)
+        
+        # Save any platform URLs that were returned
+        try:
+            db.session.commit()  # Commit the URL updates
+        except Exception as e:
+            print(f"Error saving platform URLs: {e}")
         
         # Process upload results
         successful_uploads = []
