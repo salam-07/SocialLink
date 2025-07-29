@@ -1,0 +1,173 @@
+{% extends 'layout.html' %}
+
+<!-- Post Detail Page -->
+{% block content %}
+
+{% if post %}
+<!-- Post Header -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-white mb-2">Post Details</h1>
+            <p class="text-gray-400">View your post content and platform information</p>
+        </div>
+        <a href="{{ url_for('history') }}" 
+           class="inline-flex items-center px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
+            <i class="material-symbols-outlined mr-2">arrow_back</i>
+            Back to History
+        </a>
+    </div>
+</div>
+
+<!-- Post Content Card -->
+<div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
+    <!-- Post Type and Date -->
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                       {% if post.post_type == 'media' %}bg-blue-100 text-blue-800{% else %}bg-green-100 text-green-800{% endif %}">
+                {% if post.post_type == 'media' %}
+                <i class="material-symbols-outlined text-sm mr-2">image</i>
+                Media Post
+                {% else %}
+                <i class="material-symbols-outlined text-sm mr-2">text_fields</i>
+                Text Post
+                {% endif %}
+            </span>
+            <span class="text-sm text-gray-400">
+                Posted on {{ post.date_posted.strftime('%B %d, %Y at %I:%M %p') }}
+            </span>
+        </div>
+        <span class="text-xs text-gray-500 font-mono bg-gray-700 px-2 py-1 rounded">
+            ID: {{ post.id[:8] }}...
+        </span>
+    </div>
+
+    <!-- Main Content Display -->
+    <div class="mb-6">
+        {% if post.post_type == 'media' %}
+        <!-- Media Content -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Media Content</h3>
+            <div class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+                {% set file_ext = post.content.split('.')[-1].lower() %}
+                <div class="flex flex-col items-center">
+                    {% if file_ext in ['jpg', 'jpeg', 'png', 'gif', 'svg'] %}
+                    <img src="{{ post.content }}" alt="Posted media"
+                         class="max-w-full max-h-96 object-contain rounded border border-gray-600 mb-4">
+                    {% elif file_ext in ['mp4', 'mov', 'avi', 'webm'] %}
+                    <video controls class="max-w-full max-h-96 rounded border border-gray-600 mb-4">
+                        <source src="{{ post.content }}" type="video/{{ file_ext }}">
+                        Your browser does not support the video tag.
+                    </video>
+                    {% else %}
+                    <div class="w-32 h-32 bg-gray-700 rounded border border-gray-600 flex items-center justify-center mb-4">
+                        <i class="material-symbols-outlined text-4xl text-gray-400">description</i>
+                    </div>
+                    {% endif %}
+                    <div class="text-center">
+                        <p class="text-sm text-gray-300 font-medium">{{ post.content.split('/')[-1] }}</p>
+                        <p class="text-xs text-gray-500">File type: {{ file_ext.upper() }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caption (if exists) -->
+        {% if post.caption %}
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Caption</h3>
+            <div class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+                <p class="text-white leading-relaxed">{{ post.caption }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- Text Content -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Post Content</h3>
+            <div class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+                <p class="text-white leading-relaxed whitespace-pre-wrap">{{ post.content }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Platform Information -->
+    <div class="border-t border-gray-700 pt-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Published Platforms</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for platform_id in post.get_platforms_list() %}
+            <div class="bg-gray-700 border border-gray-600 rounded-lg p-4 flex items-center">
+                <div class="flex items-center space-x-3">
+                    {% if platform_id == 'facebook' %}
+                    <img src="/static/icons/facebook.png" alt="Facebook" class="w-8 h-8">
+                    <div>
+                        <p class="text-white font-medium">Facebook</p>
+                    </div>
+                    {% elif platform_id == 'x' %}
+                    <img src="/static/icons/x.png" alt="X" class="w-8 h-8">
+                    <div>
+                        <p class="text-white font-medium">X (Twitter)</p>
+                    </div>
+                    {% elif platform_id == 'instagram' %}
+                    <img src="/static/icons/instagram.png" alt="Instagram" class="w-8 h-8">
+                    <div>
+                        <p class="text-white font-medium">Instagram</p>
+                    </div>
+                    {% elif platform_id == 'linkedin' %}
+                    <img src="/static/icons/linkedin.png" alt="LinkedIn" class="w-8 h-8">
+                    <div>
+                        <p class="text-white font-medium">LinkedIn</p>
+                    </div>
+                    {% elif platform_id == 'threads' %}
+                    <img src="/static/icons/threads.png" alt="Threads" class="w-8 h-8">
+                    <div>
+                        <p class="text-white font-medium">Threads</p>
+                    </div>
+                    {% elif platform_id == 'reddit' %}
+                    <img src="/static/icons/reddit.png" alt="Reddit" class="w-8 h-8">
+                    <div>
+                        <p class="text-white font-medium">Reddit</p>
+                    </div>
+                    {% else %}
+                    <div class="w-8 h-8 bg-gray-600 rounded flex items-center justify-center">
+                        <i class="material-symbols-outlined text-gray-400 text-sm">platform</i>
+                    </div>
+                    <div>
+                        <p class="text-white font-medium">{{ platform_id.title() }}</p>
+                        <p class="text-xs text-gray-400">Platform</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Platform Summary -->
+        <div class="mt-4 p-3 bg-gray-900 rounded-lg">
+            <p class="text-gray-300 text-sm">
+                <span class="font-medium">Total platforms:</span> {{ post.get_platforms_list()|length }}
+            </p>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- Post Not Found -->
+<div class="text-center py-12">
+    <div class="max-w-md mx-auto">
+        <i class="material-symbols-outlined text-6xl text-gray-600 mb-4">error</i>
+        <h3 class="text-xl font-medium text-white mb-2">Post Not Found</h3>
+        <p class="text-gray-400 mb-6">The post you're looking for doesn't exist or has been deleted.</p>
+        <a href="{{ url_for('history') }}"
+            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="material-symbols-outlined mr-2">arrow_back</i>
+            Back to History
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

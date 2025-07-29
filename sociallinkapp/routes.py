@@ -207,6 +207,12 @@ def history():
     posts = Post.query.order_by(Post.date_posted.desc()).all() # order by date
     return render_template('history.html', heading="Posting History", title="Posting History", posts=posts)
 
+# post detail route
+@app.route('/post/<post_id>')
+def post_detail(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post_detail.html', heading="Post Details", title="Post Details", post=post)
+
 # account management route
 @app.route('/accounts')
 def accounts():

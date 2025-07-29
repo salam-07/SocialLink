@@ -13,16 +13,17 @@
 <div class="space-y-4">
     <!--Loop through all posts-->
     {% for post in posts %}
-    <div class="bg-gray-800 border border-gray-600 rounded-lg p-4 sm:p-6">
-        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-            <!-- Post Content -->
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 mb-2">
-                    <span
-                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                     {% if post.post_type == 'media' %}bg-blue-100 text-blue-800{% else %}bg-green-100 text-green-800{% endif %}">
-                        {% if post.post_type == 'media' %}
-                        <i class="material-symbols-outlined text-xs mr-1">image</i>
+    <a href="{{ url_for('post_detail', post_id=post.id) }}" class="block">
+        <div class="bg-gray-800 border border-gray-600 rounded-lg p-4 sm:p-6 hover:bg-gray-750 hover:border-gray-500 transition-all duration-200 cursor-pointer">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                <!-- Post Content -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                         {% if post.post_type == 'media' %}bg-blue-100 text-blue-800{% else %}bg-green-100 text-green-800{% endif %}">
+                            {% if post.post_type == 'media' %}
+                            <i class="material-symbols-outlined text-xs mr-1">image</i>
                         Media Post
                         {% else %}
                         <i class="material-symbols-outlined text-xs mr-1">text_fields</i>
@@ -105,6 +106,7 @@
             </div>
         </div>
     </div>
+    </a>
     {% endfor %}
 </div>
 {% else %}
@@ -113,13 +115,31 @@
         <i class="material-symbols-outlined text-6xl text-gray-600 mb-4">history</i>
         <h3 class="text-lg font-medium text-white mb-2">No posts yet</h3>
         <p class="text-gray-400 mb-6">You haven't created any posts yet. Start by creating your first post!</p>
-        <a href="{{ url_for('create_post') }}"
-            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="material-symbols-outlined mr-2">add</i>
-            Create First Post
-        </a>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="{{ url_for('create_media_post') }}"
+                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="material-symbols-outlined mr-2">image</i>
+                Create Media Post
+            </a>
+            <a href="{{ url_for('create_text_post') }}"
+                class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                <i class="material-symbols-outlined mr-2">text_fields</i>
+                Create Text Post
+            </a>
+        </div>
     </div>
 </div>
 {% endif %}
+
+<!-- Additional CSS for enhanced styling -->
+<style>
+.bg-gray-750 {
+    background-color: rgb(55, 65, 81);
+}
+
+.bg-gray-850 {
+    background-color: rgb(31, 41, 55);
+}
+</style>
 
 {% endblock %}
