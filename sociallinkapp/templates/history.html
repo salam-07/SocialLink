@@ -75,7 +75,11 @@
                 <!-- Platforms -->
                 <div class="flex flex-wrap gap-2">
                     {% for platform_id in post.get_platforms_list() %}
-                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-700 text-gray-300">
+                    <a href="{{ post.get_platform_url(platform_id) }}" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       onclick="event.stopPropagation();"
+                       class="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors cursor-pointer">
                         {% if platform_id == 'facebook' %}
                         <img src="/static/icons/facebook.png" alt="Facebook" class="w-3 h-3 mr-1">
                         Facebook
@@ -95,7 +99,7 @@
                         <img src="/static/icons/reddit.png" alt="Reddit" class="w-3 h-3 mr-1">
                         Reddit
                         {% endif %}
-                    </span>
+                    </a>
                     {% endfor %}
                 </div>
             </div>

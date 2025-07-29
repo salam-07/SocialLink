@@ -99,37 +99,46 @@
         <h3 class="text-lg font-semibold text-white mb-4">Published Platforms</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for platform_id in post.get_platforms_list() %}
-            <div class="bg-gray-700 border border-gray-600 rounded-lg p-4 flex items-center">
+            <a href="{{ post.get_platform_url(platform_id) }}" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="bg-gray-700 border border-gray-600 rounded-lg p-4 flex items-center hover:bg-gray-600 transition-colors cursor-pointer">
                 <div class="flex items-center space-x-3">
                     {% if platform_id == 'facebook' %}
                     <img src="/static/icons/facebook.png" alt="Facebook" class="w-8 h-8">
                     <div>
                         <p class="text-white font-medium">Facebook</p>
+                        <p class="text-xs text-gray-400">{% if post.get_platform_url(platform_id) != '#' %}View Post{% else %}Not posted{% endif %}</p>
                     </div>
                     {% elif platform_id == 'x' %}
                     <img src="/static/icons/x.png" alt="X" class="w-8 h-8">
                     <div>
                         <p class="text-white font-medium">X (Twitter)</p>
+                        <p class="text-xs text-gray-400">{% if post.get_platform_url(platform_id) != '#' %}View Post{% else %}Not posted{% endif %}</p>
                     </div>
                     {% elif platform_id == 'instagram' %}
                     <img src="/static/icons/instagram.png" alt="Instagram" class="w-8 h-8">
                     <div>
                         <p class="text-white font-medium">Instagram</p>
+                        <p class="text-xs text-gray-400">{% if post.get_platform_url(platform_id) != '#' %}View Post{% else %}Not posted{% endif %}</p>
                     </div>
                     {% elif platform_id == 'linkedin' %}
                     <img src="/static/icons/linkedin.png" alt="LinkedIn" class="w-8 h-8">
                     <div>
                         <p class="text-white font-medium">LinkedIn</p>
+                        <p class="text-xs text-gray-400">{% if post.get_platform_url(platform_id) != '#' %}View Post{% else %}Not posted{% endif %}</p>
                     </div>
                     {% elif platform_id == 'threads' %}
                     <img src="/static/icons/threads.png" alt="Threads" class="w-8 h-8">
                     <div>
                         <p class="text-white font-medium">Threads</p>
+                        <p class="text-xs text-gray-400">{% if post.get_platform_url(platform_id) != '#' %}View Post{% else %}Not posted{% endif %}</p>
                     </div>
                     {% elif platform_id == 'reddit' %}
                     <img src="/static/icons/reddit.png" alt="Reddit" class="w-8 h-8">
                     <div>
                         <p class="text-white font-medium">Reddit</p>
+                        <p class="text-xs text-gray-400">{% if post.get_platform_url(platform_id) != '#' %}View Post{% else %}Not posted{% endif %}</p>
                     </div>
                     {% else %}
                     <div class="w-8 h-8 bg-gray-600 rounded flex items-center justify-center">
@@ -137,11 +146,11 @@
                     </div>
                     <div>
                         <p class="text-white font-medium">{{ platform_id.title() }}</p>
-                        <p class="text-xs text-gray-400">Platform</p>
+                        <p class="text-xs text-gray-400">{% if post.get_platform_url(platform_id) != '#' %}View Post{% else %}Not posted{% endif %}</p>
                     </div>
                     {% endif %}
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
         
