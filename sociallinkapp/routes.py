@@ -63,9 +63,9 @@ def home():
     
     return render_template('home.html', heading="Dashboard", title="Dashboard", **dashboard_data)
 
-#create new post route
-@app.route('/create', methods=['GET', 'POST'])
-def create_post():
+#create media post route
+@app.route('/create-media', methods=['GET', 'POST'])
+def create_media_post():
     uploaded_file = None
     
     if request.method == 'POST':
@@ -83,7 +83,7 @@ def create_post():
         else:
             flash(f'Upload failed: {result["message"]}', 'error')
     
-        return redirect(url_for('create_post'))
+        return redirect(url_for('create_media_post'))
     
     # GET request - show the form
     # Check if there's an uploaded file in session
@@ -98,7 +98,20 @@ def create_post():
         {'id': 'threads', 'name': 'Threads', 'icon': 'threads.png'},
         {'id': 'reddit', 'name': 'Reddit', 'icon': 'reddit.png'}
     ]
-    return render_template('create_post.html', heading="Publish Posts", title="Publish Posts", platforms=platforms, uploaded_file=uploaded_file)
+    return render_template('create_media_post.html', heading="Create Media Post", title="Create Media Post", platforms=platforms, uploaded_file=uploaded_file)
+
+#create text post route
+@app.route('/create-text', methods=['GET'])
+def create_text_post():
+    platforms = [
+        {'id': 'facebook', 'name': 'Facebook', 'icon': 'facebook.png'},
+        {'id': 'x', 'name': 'X', 'icon': 'x.png'},
+        {'id': 'instagram', 'name': 'Instagram', 'icon': 'instagram.png'},
+        {'id': 'linkedin', 'name': 'LinkedIn', 'icon': 'linkedin.png'},
+        {'id': 'threads', 'name': 'Threads', 'icon': 'threads.png'},
+        {'id': 'reddit', 'name': 'Reddit', 'icon': 'reddit.png'}
+    ]
+    return render_template('create_text_post.html', heading="Create Text Post", title="Create Text Post", platforms=platforms)
 
 # Remove uploaded file route
 @app.route('/remove_upload')
@@ -106,42 +119,33 @@ def remove_upload():
     if 'uploaded_file' in session:
         session.pop('uploaded_file', None)
         flash('File removed successfully!', 'success')
-    return redirect(url_for('create_post'))
+    return redirect(url_for('create_media_post'))
 
-# enter post in database
-@app.route('/submit_post', methods=['POST'])
-def submit_post():
+# Submit media post to database
+@app.route('/submit_media_post', methods=['POST'])
+def submit_media_post():
     try:
         # Get form data
-        post_type = request.form.get('post_type')  # 'text' or 'media'
-        content = request.form.get('content', '')
+        caption = request.form.get('caption', '').strip()
         selected_platforms = request.form.getlist('selected_platforms')
         
         # Validate required data
-        if not post_type:
-            flash('Post type is required!', 'error')
-            return redirect(url_for('create_post'))
-        
         if not selected_platforms:
             flash('Please select at least one platform!', 'error')
-            return redirect(url_for('create_post'))
+            return redirect(url_for('create_media_post'))
         
-        # Handle content based on post type
-        if post_type == 'media':
-            # Check if there's an uploaded file in session
-            if 'uploaded_file' not in session:
-                flash('Please upload a file for media posts!', 'error')
-                return redirect(url_for('create_post'))
-            content = session['uploaded_file']['file_path']
-        elif post_type == 'text':
-            if not content.strip():
-                flash('Text content is required for text posts!', 'error')
-                return redirect(url_for('create_post'))
+        # Check if there's an uploaded file in session
+        if 'uploaded_file' not in session:
+            flash('Please upload a file for media posts!', 'error')
+            return redirect(url_for('create_media_post'))
+        
+        content = session['uploaded_file']['file_path']
         
         # Create new post
         new_post = Post(
-            post_type=post_type,
+            post_type='media',
             content=content,
+            caption=caption if caption else None,
             platforms=json.dumps(selected_platforms)
         )
         
@@ -152,13 +156,50 @@ def submit_post():
         # Clear session data
         session.pop('uploaded_file', None)
         
-        flash(f'Post submitted successfully to {len(selected_platforms)} platform(s)!', 'success')
-        return redirect(url_for('create_post'))
+        flash(f'Media post submitted successfully to {len(selected_platforms)} platform(s)!', 'success')
+        return redirect(url_for('create_media_post'))
         
     except Exception as e:
         db.session.rollback()
-        flash(f'Error submitting post: {str(e)}', 'error')
-        return redirect(url_for('create_post'))
+        flash(f'Error submitting media post: {str(e)}', 'error')
+        return redirect(url_for('create_media_post'))
+
+# Submit text post to database
+@app.route('/submit_text_post', methods=['POST'])
+def submit_text_post():
+    try:
+        # Get form data
+        content = request.form.get('content', '').strip()
+        selected_platforms = request.form.getlist('selected_platforms')
+        
+        # Validate required data
+        if not selected_platforms:
+            flash('Please select at least one platform!', 'error')
+            return redirect(url_for('create_text_post'))
+        
+        if not content:
+            flash('Text content is required for text posts!', 'error')
+            return redirect(url_for('create_text_post'))
+        
+        # Create new post
+        new_post = Post(
+            post_type='text',
+            content=content,
+            caption=None,  # No caption for text posts
+            platforms=json.dumps(selected_platforms)
+        )
+        
+        # Save to database
+        db.session.add(new_post)
+        db.session.commit()
+        
+        flash(f'Text post submitted successfully to {len(selected_platforms)} platform(s)!', 'success')
+        return redirect(url_for('create_text_post'))
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error submitting text post: {str(e)}', 'error')
+        return redirect(url_for('create_text_post'))
 
 # post history route
 @app.route('/history')

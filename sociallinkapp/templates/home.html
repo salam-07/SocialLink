@@ -122,6 +122,13 @@
                                         <p class="text-xs text-gray-400">{{ post.content.split('/')[-1][:30] }}...</p>
                                     </div>
                                 </div>
+                                {% if post.caption %}
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-300 line-clamp-2">
+                                        {{ post.caption[:100] }}{% if post.caption|length > 100 %}...{% endif %}
+                                    </p>
+                                </div>
+                                {% endif %}
                                 {% else %}
                                 <p class="text-sm text-gray-300 line-clamp-2">
                                     {{ post.content[:100] }}{% if post.content|length > 100 %}...{% endif %}
@@ -162,11 +169,18 @@
             <div class="text-center py-8">
                 <i class="material-symbols-outlined text-4xl text-gray-600 mb-3">post_add</i>
                 <p class="text-gray-400 mb-4">No posts yet</p>
-                <a href="{{ url_for('create_post') }}" 
-                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="material-symbols-outlined mr-2">add</i>
-                    Create Your First Post
-                </a>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="{{ url_for('create_media_post') }}" 
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="material-symbols-outlined mr-2">image</i>
+                        Create Media Post
+                    </a>
+                    <a href="{{ url_for('create_text_post') }}" 
+                       class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="material-symbols-outlined mr-2">text_fields</i>
+                        Create Text Post
+                    </a>
+                </div>
             </div>
             {% endif %}
         </div>
@@ -178,10 +192,15 @@
         <div class="bg-gray-800 border border-gray-600 rounded-xl p-6">
             <h3 class="text-lg font-bold text-white mb-4">Quick Actions</h3>
             <div class="space-y-3">
-                <a href="{{ url_for('create_post') }}" 
+                <a href="{{ url_for('create_media_post') }}" 
                    class="flex items-center p-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors group">
-                    <i class="material-symbols-outlined text-white mr-3">add</i>
-                    <span class="text-white font-medium">Create New Post</span>
+                    <i class="material-symbols-outlined text-white mr-3">image</i>
+                    <span class="text-white font-medium">Create Media Post</span>
+                </a>
+                <a href="{{ url_for('create_text_post') }}" 
+                   class="flex items-center p-3 bg-green-600 hover:bg-green-700 rounded-lg transition-colors group">
+                    <i class="material-symbols-outlined text-white mr-3">text_fields</i>
+                    <span class="text-white font-medium">Create Text Post</span>
                 </a>
                 <a href="{{ url_for('history') }}" 
                    class="flex items-center p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors group">

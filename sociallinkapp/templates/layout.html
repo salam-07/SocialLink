@@ -52,10 +52,17 @@
           </a>
         </li>
         <li>
-          <a href="{{ url_for('create_post') }}"
+          <a href="{{ url_for('create_media_post') }}"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            <i class="material-symbols-outlined">add_2</i>
-            <span class="flex-1 ms-3 whitespace-nowrap">Create a Post</span>
+            <i class="material-symbols-outlined">image</i>
+            <span class="flex-1 ms-3 whitespace-nowrap">Create Media Post</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('create_text_post') }}"
+            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <i class="material-symbols-outlined">text_fields</i>
+            <span class="flex-1 ms-3 whitespace-nowrap">Create Text Post</span>
           </a>
         </li>
         <li>
