@@ -121,13 +121,15 @@ class LinkedInUploader(BaseUploader):
         if not self._validate_post_content(post):
             return {'success': False, 'message': 'Invalid post content'}
         
-        # For text posts, use content; for media posts, use caption
-        post_text = post.content if post.post_type == 'text' else (post.caption or '')
-        
-        if not post_text:
-            return {'success': False, 'message': 'No text content to post'}
-        
-        return self._post_text_to_linkedin(post_text)
+        if post.post_type == 'text':
+            # For text posts, use content directly
+            return self._post_text_to_linkedin(post.content)
+        elif post.post_type == 'media':
+            # For media posts, handle file upload and use caption (can be empty)
+            caption = post.caption or ''
+            return self._post_media_to_linkedin(post.content, caption)
+        else:
+            return {'success': False, 'message': 'Unsupported post type'}
     
     def _post_text_to_linkedin(self, text):
         """Post text content to LinkedIn"""
@@ -195,6 +197,190 @@ class LinkedInUploader(BaseUploader):
             return {'success': False, 'message': f'Network error: {str(e)}'}
         except Exception as e:
             return {'success': False, 'message': f'Upload error: {str(e)}'}
+    
+    def _post_media_to_linkedin(self, file_path, caption):
+        """Post media content to LinkedIn"""
+        # Convert relative path to absolute path
+        if file_path.startswith('/static/'):
+            # Remove leading slash and convert to absolute path
+            relative_path = file_path.lstrip('/')
+            absolute_file_path = os.path.join(os.getcwd(), 'sociallinkapp', relative_path)
+        else:
+            absolute_file_path = file_path
+        
+        print(f"Debug: Starting media upload for file: {absolute_file_path}")
+        print(f"Debug: Caption: {caption}")
+        
+        # Check if file exists
+        if not os.path.exists(absolute_file_path):
+            return {'success': False, 'message': f'File not found: {absolute_file_path}'}
+        
+        # Step 1: Register the upload
+        upload_registration = self._register_media_upload(absolute_file_path)
+        if not upload_registration['success']:
+            return upload_registration
+        
+        print(f"Debug: Upload registered successfully, asset: {upload_registration['asset']}")
+        
+        # Step 2: Upload the binary file
+        upload_result = self._upload_media_binary(absolute_file_path, upload_registration['upload_url'])
+        if not upload_result['success']:
+            return upload_result
+        
+        print("Debug: Binary file uploaded successfully")
+        
+        # Step 3: Create the share with media
+        return self._create_media_share(upload_registration['asset'], caption, absolute_file_path)
+    
+    def _register_media_upload(self, file_path):
+        """Step 1: Register media upload with LinkedIn"""
+        register_url = "https://api.linkedin.com/v2/assets?action=registerUpload"
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Content-Type": "application/json"
+        }
+        
+        # Determine media type based on file extension
+        file_ext = os.path.splitext(file_path)[1].lower()
+        video_extensions = ['.mp4', '.mov', '.avi', '.webm', '.mkv']
+        
+        recipe = "urn:li:digitalmediaRecipe:feedshare-video" if file_ext in video_extensions else "urn:li:digitalmediaRecipe:feedshare-image"
+        
+        register_body = {
+            "registerUploadRequest": {
+                "recipes": [recipe],
+                "owner": self.author_urn,
+                "serviceRelationships": [
+                    {
+                        "relationshipType": "OWNER",
+                        "identifier": "urn:li:userGeneratedContent"
+                    }
+                ]
+            }
+        }
+        
+        try:
+            response = requests.post(register_url, headers=headers, json=register_body)
+            
+            if response.status_code == 200:
+                response_data = response.json()
+                upload_mechanism = response_data["value"]["uploadMechanism"]
+                upload_url = upload_mechanism["com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"]["uploadUrl"]
+                asset = response_data["value"]["asset"]
+                
+                return {
+                    'success': True,
+                    'upload_url': upload_url,
+                    'asset': asset
+                }
+            else:
+                return {'success': False, 'message': f'Failed to register upload: {response.text}'}
+                
+        except Exception as e:
+            return {'success': False, 'message': f'Upload registration error: {str(e)}'}
+    
+    def _upload_media_binary(self, file_path, upload_url):
+        """Step 2: Upload binary file to LinkedIn"""
+        headers = {
+            "Authorization": f"Bearer {self.access_token}"
+        }
+        
+        try:
+            with open(file_path, 'rb') as file:
+                response = requests.post(upload_url, headers=headers, data=file)
+                
+                if response.status_code in [200, 201]:
+                    return {'success': True}
+                else:
+                    return {'success': False, 'message': f'Failed to upload file: {response.text}'}
+                    
+        except FileNotFoundError:
+            return {'success': False, 'message': f'File not found: {file_path}'}
+        except Exception as e:
+            return {'success': False, 'message': f'File upload error: {str(e)}'}
+    
+    def _create_media_share(self, asset, caption, file_path):
+        """Step 3: Create the media share"""
+        share_url = "https://api.linkedin.com/v2/ugcPosts"
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Content-Type": "application/json"
+        }
+        
+        # Determine media category based on file extension
+        file_ext = os.path.splitext(file_path)[1].lower()
+        video_extensions = ['.mp4', '.mov', '.avi', '.webm', '.mkv']
+        media_category = "VIDEO" if file_ext in video_extensions else "IMAGE"
+        
+        # Get filename for title
+        filename = os.path.basename(file_path)
+        file_title = os.path.splitext(filename)[0]
+        
+        share_body = {
+            "author": self.author_urn,
+            "lifecycleState": "PUBLISHED",
+            "specificContent": {
+                "com.linkedin.ugc.ShareContent": {
+                    "shareCommentary": {
+                        "text": caption
+                    },
+                    "shareMediaCategory": media_category,
+                    "media": [
+                        {
+                            "status": "READY",
+                            "description": {
+                                "text": caption
+                            },
+                            "media": asset,
+                            "title": {
+                                "text": file_title
+                            }
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+            }
+        }
+        
+        try:
+            response = requests.post(share_url, headers=headers, json=share_body)
+            
+            if response.status_code == 201:
+                # Extract post ID from response headers or try to parse JSON response
+                post_id = ''
+                linkedin_url = None
+                
+                # Try X-RestLi-Id header first (UGC API standard)
+                post_id = response.headers.get('X-RestLi-Id', '')
+                print(f"Debug: X-RestLi-Id header: {post_id}")
+                
+                # If no header, try to parse JSON response
+                if not post_id:
+                    try:
+                        response_data = response.json()
+                        post_id = response_data.get('id', '')
+                        print(f"Debug: JSON response post_id: {post_id}")
+                    except (ValueError, KeyError) as e:
+                        print(f"Warning: Could not parse media response JSON: {e}")
+                
+                # Construct LinkedIn post URL for UGC posts
+                if post_id:
+                    # UGC posts use a different URL format
+                    linkedin_url = f"https://www.linkedin.com/feed/update/{post_id}/"
+                    print(f"Debug: Generated media LinkedIn URL: {linkedin_url}")
+                
+                return {
+                    'success': True,
+                    'message': 'Media post published successfully to LinkedIn',
+                    'url': linkedin_url
+                }
+            else:
+                return {'success': False, 'message': f'Failed to create media share: {response.text}'}
+                
+        except Exception as e:
+            return {'success': False, 'message': f'Media share creation error: {str(e)}'}
     
     def disconnect(self):
         """Disconnect from LinkedIn and clear authentication data"""
