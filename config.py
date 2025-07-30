@@ -20,6 +20,9 @@ class Config:
     # Other platform settings (add as needed)
     TWITTER_API_KEY = os.environ.get('TWITTER_API_KEY')
     TWITTER_API_SECRET = os.environ.get('TWITTER_API_SECRET')
+    TWITTER_ACCESS_TOKEN = os.environ.get('TWITTER_ACCESS_TOKEN')
+    TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
+    TWITTER_BEARER_TOKEN = os.environ.get('TWITTER_BEARER_TOKEN')
     FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID')
     FACEBOOK_APP_SECRET = os.environ.get('FACEBOOK_APP_SECRET')
     
