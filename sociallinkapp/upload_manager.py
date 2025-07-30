@@ -27,6 +27,14 @@ class UploadManager:
         """Upload a post to multiple platforms"""
         results = {}
         for platform in platforms:
+            # Check if platform is authenticated before uploading
+            if not self.is_platform_authenticated(platform):
+                results[platform] = {
+                    'success': False, 
+                    'message': f'Not authenticated with {platform.title()}. Please connect your account first.'
+                }
+                continue
+                
             result = self.upload_post(post, platform)
             results[platform] = result
             
