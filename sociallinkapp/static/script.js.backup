@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const hamburgerBtn = document.querySelector('[data-drawer-toggle="separator-sidebar"]');
     const sidebar = document.getElementById('separator-sidebar');
 
+    // Backup file
     if (hamburgerBtn && sidebar) {
         // Toggle sidebar when hamburger button is clicked
         hamburgerBtn.addEventListener('click', function () {
